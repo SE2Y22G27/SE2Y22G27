@@ -1,6 +1,7 @@
 import pytest
 from source.register import register
 from source.test_clear import clear
+from source.error import InputError
 
 @pytest.fixture
 def initial_clear():
@@ -22,39 +23,39 @@ def register_c():
 	return register_info
 
 def test_invalid_email(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("hellothere", "password", "Person", "Person")
 
 def test_email_exists(initial_clear, register_a):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("testA@gmail.com", "1234567890", "Person", "AA")
 
 def test_invalid_password_length(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("test@gmail.com","A", "Person", "Person")
 
 def test_invalid_name_length1(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("test@gmail.com", "password", "", "Person")
 
 def test_invalid_name_length2(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("test@gmail.com", "password", "Person", "")
 
 def test_invalid_name_length3(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("test@gmail.com", "password", "nameismorethanthirtytocheckthatthisworks", "Person")
 
 def test_invalid_name_length4(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("test@gmail.com", "password", "Person", "nameismorethanthirtytocheckthatthisworks")
 
 def test_invalid_name_length5(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("test@gmail.com", "password", "", "")
 
 def test_invalid_name_length6(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		register("test@gmail.com", "password", "nameismorethanthirtytocheckthatthisworks", "nameismorethanthirtytocheckthatthisworks")
 
 def test_name_edge_case(initial_clear):

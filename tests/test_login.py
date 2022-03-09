@@ -2,6 +2,7 @@ import pytest
 from source.login import login
 from source.register import register
 from source.test_clear import clear
+from source.error import InputError
 
 
 @pytest.fixture
@@ -24,15 +25,15 @@ def register_c():
 	return register_info
 
 def test_no_register(initial_clear):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		login("test@gmail.com", "password")
 
 def test_login_email_fail(initial_clear, register_a):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		login("hello@gmail.com", "password")
 
 def test_login_password_fail(initial_clear, register_a):
-	with pytest.raises(Exception):
+	with pytest.raises(InputError):
 		login("testA@gmail.com", "password")
 
 def test_register_login_success(initial_clear):

@@ -1,6 +1,6 @@
 import json
-from source.database import database
-from source.helper_auth import check_valid_token, decode_token
+from source.database import data as database
+from source.helpers_auth import check_valid_token, decode_token
 from source.data_read_helper import check_valid_data
 
 def data_read_v1(token, data):

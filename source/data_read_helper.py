@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+from pickle import FALSE
 from source.database.py import data
 
 def check_valid_data(data):
@@ -14,9 +15,38 @@ def check_valid_data(data):
                    by the user is sufficent to generate an invoice
 
     '''
-
-
+    # check if the items are not empty
     for key, value in data.items():
         if value == NULL:
             return False
+    
+    return check_valid_items(data)
+
+def check_valid_items(data):
+    '''
+        checks whether the items have correct quantity, amount, and total price amount
+
+        Arguments:
+            data (dictionary) - information contains items key
+
+        Returns:
+            bool - if all the required fields are not NULL then the items are valid
+
+    '''
+    # check if the item is valid but the quantity is NULL
+    for quantity in data['items']['invoicedQuantity']:
+        if quantity == NULL:
+            return FALSE
+
+    # check if the amount is NULL
+    for amount in data['items']['lineExtensionAmount']:
+        if amount == NULL:
+            return FALSE
+
+    # check if the price is NULL
+    for price in data['items']['priceAmount']:
+        if price == NULL:
+            return FALSE
+
     return True
+

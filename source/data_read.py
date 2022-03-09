@@ -2,6 +2,7 @@ import json
 from source.database import data as database
 from source.helpers_auth import check_valid_token, decode_token
 from source.data_read_helper import check_valid_data
+from source.error import InputError, AccessError
 
 def data_read_v1(token, data):
     '''
@@ -25,11 +26,11 @@ def data_read_v1(token, data):
     # ----- Error handling -----
     # check whether the token is valid 
     if not check_valid_token(token):
-        raise Exception("user is not logged in!!!")
+        raise AccessError("user is not logged in!!!")
 
     # check if all the required fields have user inputs
     if not check_valid_data(data):
-        raise Exception("not sufficient information to create an invoice")
+        raise InputError("not sufficient information to create an invoice")
 
     user_id = decode_token(token)
 

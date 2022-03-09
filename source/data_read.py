@@ -34,11 +34,11 @@ def data_read_v1(token, data):
     user_id = decode_token(token)
 
     invoice_dict =  {'Amount' : data['Amount'], 
-                    'LineExtensionAmount' : data['lineExtensionAmount'],
-                    'TaxExclusiveAmount' : data['TaxExclusiveAmount'],
-                    'TaxInclusiveAmount' : data['TaxInclusiveAmount'],
-                    'ChargeTotalAmount' : data['ChargedTotalAmount'],
-                    'PayableAmount' : data['PayableAmount'],
+                    'lineExtensionAmount' : data['lineExtensionAmount'],
+                    'taxExclusiveAmount' : data['taxExclusiveAmount'],
+                    'taxInclusiveAmount' : data['taxInclusiveAmount'],
+                    'chargeTotalAmount' : data['chargedTotalAmount'],
+                    'payableAmount' : data['payableAmount'],
                     'items' : [],
                     }
 

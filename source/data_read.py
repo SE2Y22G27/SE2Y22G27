@@ -1,6 +1,6 @@
 import json
-from source.database import data
-from source.helper_auth import check_valid_token
+from source.database import database
+from source.helper_auth import check_valid_token, decode_token
 from source.data_read_helper import check_valid_data
 
 def data_read_v1(token, data):
@@ -28,8 +28,23 @@ def data_read_v1(token, data):
         raise Exception("user is not logged in!!!")
 
     # check if all the required fields have user inputs
-    if not check_valid_input(data):
+    if not check_valid_data(data):
         raise Exception("not sufficient information to create an invoice")
 
-   
+    user_id = decode_token(token)
+
+    invoice_dict =  {'Amount' : data['Amount'], 
+                    'LineExtensionAmount' : data['lineExtensionAmount'],
+                    'TaxExclusiveAmount' : data['TaxExclusiveAmount'],
+                    'TaxInclusiveAmount' : data['TaxInclusiveAmount'],
+                    'ChargeTotalAmount' : data['ChargedTotalAmount'],
+                    'PayableAmount' : data['PayableAmount'],
+                    'items' : [],
+                    }
+
+    for items in data['items']:
+        invoice_dict['items'].append(items)
+
+    database['user_invoices'].append(invoice_dict)
+    
 

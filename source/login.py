@@ -1,3 +1,4 @@
+from seng2021.error import InputError
 from source.database import data
 from source.helpers_auth import generate_session_id, generate_token
 import hashlib
@@ -11,6 +12,7 @@ def login(email: str, password: str):
 		password (string) - Password of the user
 
 	Exceptions:
+		(*) All exceptions are InputErrors
 		- Email does not exist in the database
 		- Password is incorrect
 
@@ -40,9 +42,9 @@ def login(email: str, password: str):
 
 	# ----- Error handling -----
 	if email_exist is False:
-		raise Exception("This email does not exist")
+		raise InputError(description="This email does not exist")
 	elif correct_password is False:
-		raise Exception("Incorrect password")
+		raise InputError(description="Incorrect password")
 	# ----- End of Error handling -----
 	
 	data.save_data(database)

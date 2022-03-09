@@ -1,6 +1,5 @@
 from asyncio.windows_events import NULL
-from pickle import FALSE
-from source.database.py import data
+from source.database import data
 
 def check_valid_data(data):
     '''
@@ -36,17 +35,17 @@ def check_valid_items(data):
     # check if the item is valid but the quantity is NULL
     for quantity in data['items']['invoicedQuantity']:
         if quantity == NULL:
-            return FALSE
+            return False
 
     # check if the amount is NULL
     for amount in data['items']['lineExtensionAmount']:
         if amount == NULL:
-            return FALSE
+            return False
 
     # check if the price is NULL
     for price in data['items']['priceAmount']:
         if price == NULL:
-            return FALSE
+            return False
 
     return True
 

@@ -1,5 +1,6 @@
 from source.database import data
-from source.helpers_auth import generate_session_id, generate_token, decode_token, check_valid_token, check_email, check_name_length
+from source.helpers_auth import generate_session_id, generate_token, check_email, check_name_length
+from source.error import InputError
 import hashlib
 
 def register(email: str, password: str, first_name: str, last_name: str):
@@ -14,6 +15,7 @@ def register(email: str, password: str, first_name: str, last_name: str):
 		last_name (string) - Last name of the user
 
 	Exceptions:
+		(*) All exceptions are InputErrors
 		- Incorrect email format
 		- If inputted email already exists
 		- First name length < 1 or > 30
@@ -34,7 +36,7 @@ def register(email: str, password: str, first_name: str, last_name: str):
 
 	# Check if the password is of sufficient length
 	if len(password) < 8:
-		raise Exception("Password is too short")
+		raise InputError(description="Password is too short")
 
 	# ----- End of Error handling -----
 

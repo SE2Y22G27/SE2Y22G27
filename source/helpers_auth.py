@@ -8,6 +8,7 @@ import re
 
 from source.config import secret
 from source.database import data
+from source.error import AccessError, InputError
 
 def generate_session_id():
 	'''
@@ -69,20 +70,20 @@ def check_valid_token(token):
 	'''
 	token_format = r'[A-Za-z0-9_%+-]+\.[A-Za-z0-9_%+-]+\.[A-Za-z0-9_%+-]+'
 	if not re.fullmatch(token_format, token):
-		raise Exception("Invalid token")
+		raise AccessError(description="Invalid token")
 	else:
 		database = data.get_data()
 		decoded_u_id = decode_token(token)
 		found = False
 		if decoded_u_id is False:
-			raise Exception("Invalid token")
+			raise AccessError(description="Invalid token")
 		
 		for user in database['users']:
 			if user['user_id'] == decoded_u_id and found is False:
 				found =  True
 				user_sessions = user['sessions']
 				if token not in user_sessions:
-					raise Exception("Invalid token")
+					raise AccessError(description="Invalid token")
 
 def check_email(email, database):
 	'''
@@ -96,11 +97,11 @@ def check_email(email, database):
 	'''
 	email_format = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'
 	if not re.fullmatch(email_format, email):
-		raise Exception("Incorrect Email format")
+		raise InputError(description="Incorrect Email format")
 	
 	for user in database['users']:
 		if user['email'] == email:
-			raise Exception("Email already exists")
+			raise InputError(description="Email already exists")
 
 def check_name_length(first_name, last_name):
 	'''
@@ -116,6 +117,6 @@ def check_name_length(first_name, last_name):
 	last_length = len(last_name)
 
 	if first_length < 1 or first_length > 30:
-		raise Exception("First name's length is invalid")
+		raise InputError(description="First name's length is invalid")
 	elif last_length < 1 or last_length > 30:
-		raise Exception("Last name's length is invalid")
+		raise InputError(description="Last name's length is invalid")

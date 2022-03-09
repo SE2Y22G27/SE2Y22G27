@@ -45,6 +45,9 @@ def data_read_v1(token, data):
     for items in data['items']:
         invoice_dict['items'].append(items)
 
-    database['user_invoices'].append(invoice_dict)
-    
+    for user in database['users']:
+        if user["user_id"] == user_id:
+            user['user_invoices'].append(invoice_dict)
+            break
+
 

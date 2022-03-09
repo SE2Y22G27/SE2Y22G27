@@ -1,4 +1,4 @@
-from seng2021.error import InputError
+from source.error import InputError
 from source.database import data
 from source.helpers_auth import generate_session_id, generate_token
 import hashlib

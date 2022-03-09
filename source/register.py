@@ -1,5 +1,5 @@
 from source.database import data
-from source.helpers_auth import generate_session_id, generate_token, decode_token, check_valid_token, check_email, check_name_length
+from source.helpers_auth import generate_session_id, generate_token, check_email, check_name_length
 import hashlib
 
 def register(email: str, password: str, first_name: str, last_name: str):

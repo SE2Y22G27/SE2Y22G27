@@ -51,4 +51,4 @@ def data_read_v1(token, data):
             user['user_invoices'].append(invoice_dict)
             break
 
-    database.store_data()
+    database.save_data(data_info)

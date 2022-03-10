@@ -23,7 +23,7 @@ def test_valid_input():
     data_read_v1(id['token'], sample_dict)         
     user_invoices = {}
     test_dict = {}
-    data.load_data()
+
     data_dict = data.get_data()
     for user in data_dict['users']:
         if user['user_id'] == id['auth_user_id']:

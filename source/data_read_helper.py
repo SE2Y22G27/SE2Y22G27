@@ -1,6 +1,3 @@
-from asyncio.windows_events import NULL
-from source.database import data
-
 def check_valid_data(data):
     '''
         checks whether the keys are all assigned with a value if not then the user
@@ -10,18 +7,18 @@ def check_valid_data(data):
             data (dictionary) - all the information required to generate invoice
 
         Returns:
-            bool - if all the required fields are not NULL then the information provided
+            bool - if all the required fields are not empty dictionary then the information provided
                    by the user is sufficent to generate an invoice
 
     '''
     # check if the items are not empty
     for key, value in data.items():
-        if value == NULL:
+        if value == {}:
             return False
     
-    return check_valid_items(data)
+    return check_valid_items(data['items'])
 
-def check_valid_items(data):
+def check_valid_items(data_items):
     '''
         checks whether the items have correct quantity, amount, and total price amount
 
@@ -29,23 +26,14 @@ def check_valid_items(data):
             data (dictionary) - information contains items key
 
         Returns:
-            bool - if all the required fields are not NULL then the items are valid
+            bool - if all the required fields are not empty dictionary then the items are valid
 
     '''
-    # check if the item is valid but the quantity is NULL
-    for quantity in data['items']['invoicedQuantity']:
-        if quantity == NULL:
-            return False
-
-    # check if the amount is NULL
-    for amount in data['items']['lineExtensionAmount']:
-        if amount == NULL:
-            return False
-
-    # check if the price is NULL
-    for price in data['items']['priceAmount']:
-        if price == NULL:
-            return False
+    # check if the item is valid by checking if all the keys are not {}
+    for item in data_items:
+        for key,value in item.items():
+            if value == {}:
+                return False
 
     return True
 

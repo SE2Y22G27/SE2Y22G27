@@ -21,24 +21,24 @@ def data_read_v1(token, data):
         {}
     
     '''
-    database = data.get_data()
+    data_info = database.get_data()
 
     # ----- Error handling -----
     # check whether the token is valid 
-    if not check_valid_token(token):
-        raise AccessError("user is not logged in!!!")
+    check_valid_token(token)
 
     # check if all the required fields have user inputs
     if not check_valid_data(data):
-        raise InputError("not sufficient information to create an invoice")
+        raise InputError("no sufficient information to create an invoice")
 
     user_id = decode_token(token)
 
-    invoice_dict =  {'Amount' : data['Amount'], 
+    invoice_dict =  {'invoiceID' : data['invoiceID'],
+                    'Amount' : data['Amount'], 
                     'lineExtensionAmount' : data['lineExtensionAmount'],
                     'taxExclusiveAmount' : data['taxExclusiveAmount'],
                     'taxInclusiveAmount' : data['taxInclusiveAmount'],
-                    'chargeTotalAmount' : data['chargedTotalAmount'],
+                    'chargeTotalAmount' : data['chargeTotalAmount'],
                     'payableAmount' : data['payableAmount'],
                     'items' : [],
                     }
@@ -46,9 +46,9 @@ def data_read_v1(token, data):
     for items in data['items']:
         invoice_dict['items'].append(items)
 
-    for user in database['users']:
+    for user in data_info['users']:
         if user["user_id"] == user_id:
             user['user_invoices'].append(invoice_dict)
             break
 
-
+    database.store_data()

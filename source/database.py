@@ -41,3 +41,22 @@ print("Loading Database...")
 
 global data
 data = Database()
+
+
+def save_data():
+	'''
+		Store the current dictionary information in data into file
+	'''
+	pickle_out = open("data.pickle", "wb")
+	pickle.dump (data)
+	pickle_out.close()
+
+def load_data():
+	'''
+		load the data dictionary stored inside pickle file
+	'''
+	try:
+		pickle_in = open("data.pickle", "rb")
+		data = pickle.load(pickle_in)
+	except:
+		return

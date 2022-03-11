@@ -61,11 +61,14 @@ def create_invoice_v1(token):
     # Section 3. LegalMonetaryTotal
     legal_monetary_total = ET.SubElement(root, f"{cac}LegalMonetaryTotal")
     legal_monetary_total_dict = invoice_dict["LegalMonetaryTotal"]
-    ET.SubElement(legal_monetary_total, f"{cbc}LineExtensionAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['lineExtensionAmount']}"
-    ET.SubElement(legal_monetary_total, f"{cbc}TaxExclusiveAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['taxExclusiveAmount']}"
-    ET.SubElement(legal_monetary_total, f"{cbc}TaxInclusiveAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['taxInclusiveAmount']}"
-    ET.SubElement(legal_monetary_total, f"{cbc}ChargeTotalAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['chargeTotalAmount']}"
-    ET.SubElement(legal_monetary_total, f"{cbc}PayableAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['payableAmount']}"
+    for key, value in legal_monetary_total_dict.items():
+        ET.SubElement(legal_monetary_total, f"{cbc}{key}", currencyID=f"{cID}").text = f"{value}"
+
+    # ET.SubElement(legal_monetary_total, f"{cbc}LineExtensionAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['lineExtensionAmount']}"
+    # ET.SubElement(legal_monetary_total, f"{cbc}TaxExclusiveAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['taxExclusiveAmount']}"
+    # ET.SubElement(legal_monetary_total, f"{cbc}TaxInclusiveAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['taxInclusiveAmount']}"
+    # ET.SubElement(legal_monetary_total, f"{cbc}ChargeTotalAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['chargeTotalAmount']}"
+    # ET.SubElement(legal_monetary_total, f"{cbc}PayableAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['payableAmount']}"
 
 
     # Section 4 / 5. InvoiceLines.
@@ -88,3 +91,5 @@ def create_invoice_v1(token):
     #ET.indent(tree, space="\t", level=0)
 
     tree.write(f"{user_id}_e_invoice.xml")
+
+    return {}

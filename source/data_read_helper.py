@@ -1,5 +1,5 @@
-
-
+import jwt
+from source.config import secret
 def check_valid_data(data):
     '''
         checks whether the keys are all assigned with a value if not then the user
@@ -100,3 +100,26 @@ def check_valid_PriceAmount(data_amount):
         return True
 
     return False
+
+def decode_user_invoice(data):
+		return jwt.decode(data, secret, algorithms = ['HS256'])
+'''
+def decode_data(data):
+    decoded_dictionary = {}
+    for key,value in data.items():
+        if key == 'AllowanceCharge':
+            decoded_dictionary[key] = decode_data(data[key])
+        elif key == "TaxCategory":
+            decoded_dictionary[key] = decode_data(data[key])
+        elif key == 'TaxScheme':
+            decoded_dictionary[key] = decode_data(data[key])
+        elif key == "LegalMonetarytotal":
+            decoded_dictionary[key] = decode_data(data[key])
+        elif key == "InvoiceLine":
+            decoded_dictionary[key] = decode_data(data[key])
+        elif key == "PriceAmount":
+            decoded_dictionary[key] = decode_data(data[key])
+        else :
+            decoded_dictionary['InvoiceTypeCode'] = jwt.decode(data['InvoiceTypeCode'], secret, algorithms=['HS256'])
+    return decoded_dictionary
+    '''

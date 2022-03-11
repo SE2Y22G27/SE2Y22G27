@@ -28,6 +28,12 @@ data_object = {
 class Database:
 	def __init__(self):
 		self.__data = data_object
+		try:
+			pickle_in = open("data.pickle", "rb")
+			self.__data = pickle.load(pickle_in)
+			pickle_in.close()
+		except:
+			print("There is no data to persist at the moment")
 
 	def get_data(self):
 		return self.__data
@@ -36,6 +42,11 @@ class Database:
 		if not isinstance(new, dict):
 			raise TypeError("not type dictionary")
 		self.__data = new
+		
+		pickle_out = open("data.pickle", "wb")
+		pickle.dump(self.__data, pickle_out)
+		pickle_out.close()
+
 
 print("Loading Database...")
 
@@ -43,20 +54,3 @@ global data
 data = Database()
 
 
-def save_data():
-	'''
-		Store the current dictionary information in data into file
-	'''
-	pickle_out = open("data.pickle", "wb")
-	pickle.dump (data)
-	pickle_out.close()
-
-def load_data():
-	'''
-		load the data dictionary stored inside pickle file
-	'''
-	try:
-		pickle_in = open("data.pickle", "rb")
-		data = pickle.load(pickle_in)
-	except:
-		return

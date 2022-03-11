@@ -10,91 +10,239 @@ def test_valid_input():
     clear()
     id = register("test0@gmail.com", "password", "I", "Person")
 
-    sample_dict = { 'invoiceID' : 1,
-                    'Amount' : 10, 
-                    'lineExtensionAmount' : 6,
-                    'taxExclusiveAmount' : 4,
-                    'taxInclusiveAmount' : 9,
-                    'chargeTotalAmount' : 332.6,
-                    'payableAmount' : 332.6,
-                    'items' : [{'invoiceQuantity' : 5, 'lineExtensionAmount' : 15, 'priceAmount' : 26.61},],
+    sample_dict = { 'InvoiceTypeCode' : 380,
+
+                    'AllowanceCharge' :     {
+                                                'ChargeIndicator' : 'true',
+                                                'AllowanceChargeReason' : 'Insurance',
+                                                'Amount' : -25,
+                                                'TaxCatagory' : {   'ID' : 'S',
+                                                                    'Percent' : 25.0,
+                                                                    'TaxScheme' : { 'ID' : 'VAT'},
+                                                                },
+                                            }, 
+
+                    'LegalMonetaryTotal' : {    'LineExtensionAmount' : -1300,
+                                                'TaxExclusiveAmount' : -1000,
+                                                'TaxInclusiveAmount' : -1656.25,
+                                                'ChargedTotalAmount' : -25,
+                                                'PayableAmount' : -1656.25,
+                                            },
+
+                    'InvoiceLine' : [
+                                        {
+                                            'ID' : 1, 
+                                            'InvoiceQuantity' : -7,
+                                            'LineExtensionAmount' : -2800,
+                                            'Price' : {
+                                                        'PriceAmount' : 400,
+                                                      },
+                                        },
+                                        {
+                                            'ID' : 2, 
+                                            'InvoiceQuantity' : 3,
+                                            'LineExtensionAmount' : 1500,
+                                            'Price' : {
+                                                        'PriceAmount' : 500,
+                                                      },
+                                        },
+                                    ],
+                    
                     }
 
     data_read_v1(id['token'], sample_dict)         
-    user_invoices = {}
     test_dict = {}
 
     data_dict = data.get_data()
     for user in data_dict['users']:
         if user['user_id'] == id['auth_user_id']:
-            user_invoices = user['user_invoices']
-            break
-
-    for invoice in user_invoices:
-        if invoice['invoiceID'] == 1:
-            test_dict = invoice
+            test_dict = user['user_invoice']
             break
 
     assert  test_dict == sample_dict
 
-def test_invalid_taxInclusiveAmount():
+def test_invalid_LegalMonetaryTotal():
     clear()
     id = register("test0@gmail.com", "password", "I", "Person")
 
-    sample_dict = { 'Amount' : 10, 
-                    'lineExtensionAmount' : 6,
-                    'taxExclusiveAmount' : 4,
-                    'taxInclusiveAmount' : {},
-                    'chargeTotalAmount' : 332.6,
-                    'payableAmount' : 332.6,
-                    'items' : [{'invoiceQuantity' : 5, 'lineExtensionAmount' : 15, 'priceAmount' : 26.61},],
+    sample_dict = { 'InvoiceTypeCode' : 380,
+
+                    'AllowanceCharge' :     {
+                                                'ChargeIndicator' : 'true',
+                                                'AllowanceChargeReason' : 'Insurance',
+                                                'Amount' : -25,
+                                                'TaxCatagory' : {   'ID' : 'S',
+                                                                    'Percent' : 25.0,
+                                                                    'TaxScheme' : { 'ID' : 'VAT'},
+                                                                },
+                                            }, 
+
+                    'LegalMonetaryTotal' : {    'LineExtensionAmount' : -1300,
+                                                'TaxExclusiveAmount' : {},
+                                                'TaxInclusiveAmount' : -1656.25,
+                                                'ChargedTotalAmount' : -25,
+                                                'PayableAmount' : -1656.25,
+                                            },
+
+                    'InvoiceLine' : [
+                                        {
+                                            'ID' : 1, 
+                                            'InvoiceQuantity' : -7,
+                                            'LineExtensionAmount' : -2800,
+                                            'Price' : {
+                                                        'PriceAmount' : 400,
+                                                      },
+                                        },
+                                        {
+                                            'ID' : 2, 
+                                            'InvoiceQuantity' : 3,
+                                            'LineExtensionAmount' : 1500,
+                                            'Price' : {
+                                                        'PriceAmount' : 500,
+                                                      },
+                                        },
+                                    ],
+                    
                     }
     with pytest.raises(InputError):
         data_read_v1(id['token'], sample_dict)
 
-def test_invalid_taxInclusiveAmount():
+def test_invalid_Allowance():
     clear()
     id = register("test0@gmail.com", "password", "I", "Person")
 
-    sample_dict = { 'Amount' : 10, 
-                    'lineExtensionAmount' : 6,
-                    'taxExclusiveAmount' : 4,
-                    'taxInclusiveAmount' : {},
-                    'chargeTotalAmount' : 332.6,
-                    'payableAmount' : 332.6,
-                    'items' : [{'invoiceQuantity' : 5, 'lineExtensionAmount' : 15, 'priceAmount' : 26.61},],
+    sample_dict = { 'InvoiceTypeCode' : 380,
+
+                    'AllowanceCharge' :     {
+                                                'ChargeIndicator' : 'true',
+                                                'AllowanceChargeReason' : {},
+                                                'Amount' : -25,
+                                                'TaxCatagory' : {   'ID' : 'S',
+                                                                    'Percent' : 25.0,
+                                                                    'TaxScheme' : { 'ID' : 'VAT'},
+                                                                },
+                                            }, 
+
+                    'LegalMonetaryTotal' : {    'LineExtensionAmount' : -1300,
+                                                'TaxExclusiveAmount' : {},
+                                                'TaxInclusiveAmount' : -1656.25,
+                                                'ChargedTotalAmount' : -25,
+                                                'PayableAmount' : -1656.25,
+                                            },
+
+                    'InvoiceLine' : [
+                                        {
+                                            'ID' : 1, 
+                                            'InvoiceQuantity' : -7,
+                                            'LineExtensionAmount' : -2800,
+                                            'Price' : {
+                                                        'PriceAmount' : 400,
+                                                      },
+                                        },
+                                        {
+                                            'ID' : 2, 
+                                            'InvoiceQuantity' : 3,
+                                            'LineExtensionAmount' : 1500,
+                                            'Price' : {
+                                                        'PriceAmount' : 500,
+                                                      },
+                                        },
+                                    ],
+                    
                     }
 
     with pytest.raises(InputError):
         data_read_v1(id['token'], sample_dict)
 
-def test_invalid_items():
+def test_invalid_InvoiceTypeCode():
     clear()
     id = register("test0@gmail.com", "password", "I", "Person")
 
-    sample_dict = { 'Amount' : 10, 
-                    'lineExtensionAmount' : 6,
-                    'taxExclusiveAmount' : 4,
-                    'taxInclusiveAmount' : {},
-                    'chargeTotalAmount' : 332.6,
-                    'payableAmount' : 332.6,
-                    'items' : [{}],
+    sample_dict = { 'InvoiceTypeCode' : {},
+
+                    'AllowanceCharge' :     {
+                                                'ChargeIndicator' : 'true',
+                                                'AllowanceChargeReason' : 'Insurance',
+                                                'Amount' : -25,
+                                                'TaxCatagory' : {   'ID' : 'S',
+                                                                    'Percent' : 25.0,
+                                                                    'TaxScheme' : { 'ID' : 'VAT'},
+                                                                },
+                                            }, 
+
+                    'LegalMonetaryTotal' : {    'LineExtensionAmount' : -1300,
+                                                'TaxExclusiveAmount' : {},
+                                                'TaxInclusiveAmount' : -1656.25,
+                                                'ChargedTotalAmount' : -25,
+                                                'PayableAmount' : -1656.25,
+                                            },
+
+                    'InvoiceLine' : [
+                                        {
+                                            'ID' : 1, 
+                                            'InvoiceQuantity' : -7,
+                                            'LineExtensionAmount' : -2800,
+                                            'Price' : {
+                                                        'PriceAmount' : 400,
+                                                      },
+                                        },
+                                        {
+                                            'ID' : 2, 
+                                            'InvoiceQuantity' : 3,
+                                            'LineExtensionAmount' : 1500,
+                                            'Price' : {
+                                                        'PriceAmount' : 500,
+                                                      },
+                                        },
+                                    ],
+                    
                     }
 
     with pytest.raises(InputError):
         data_read_v1(id['token'], sample_dict)
 
-def test_invalid_item_information():
+def test_invalid_InvoiceLine():
     clear()
     id = register("test0@gmail.com", "password", "I", "Person")
 
-    sample_dict = { 'Amount' : 10, 
-                    'lineExtensionAmount' : 6,
-                    'taxExclusiveAmount' : 4,
-                    'taxInclusiveAmount' : {},
-                    'chargeTotalAmount' : 332.6,
-                    'payableAmount' : 332.6,
-                    'items' : [{'invoiceQuantity' : {}, 'lineExtensionAmount' : 15, 'priceAmount' : 26.61},],
+    sample_dict = { 'InvoiceTypeCode' : 380,
+
+                    'AllowanceCharge' :     {
+                                                'ChargeIndicator' : 'true',
+                                                'AllowanceChargeReason' : 'Insurance',
+                                                'Amount' : -25,
+                                                'TaxCatagory' : {   'ID' : 'S',
+                                                                    'Percent' : 25.0,
+                                                                    'TaxScheme' : { 'ID' : 'VAT'},
+                                                                },
+                                            }, 
+
+                    'LegalMonetaryTotal' : {    'LineExtensionAmount' : -1300,
+                                                'TaxExclusiveAmount' : {},
+                                                'TaxInclusiveAmount' : -1656.25,
+                                                'ChargedTotalAmount' : -25,
+                                                'PayableAmount' : -1656.25,
+                                            },
+
+                    'InvoiceLine' : [
+                                        {
+                                            'ID' : 1, 
+                                            'InvoiceQuantity' : -7,
+                                            'LineExtensionAmount' : -2800,
+                                            'Price' : {
+                                                        'PriceAmount' : 400,
+                                                      },
+                                        },
+                                        {
+                                            'ID' : 2, 
+                                            'InvoiceQuantity' : 3,
+                                            'LineExtensionAmount' : 1500,
+                                            'Price' : {
+                                                        'PriceAmount' : {},
+                                                      },
+                                        },
+                                    ],
+                    
                     }
 
     with pytest.raises(InputError):

@@ -33,22 +33,37 @@ def data_read_v1(token, data):
 
     user_id = decode_token(token)
 
-    invoice_dict =  {'invoiceID' : data['invoiceID'],
-                    'Amount' : data['Amount'], 
-                    'lineExtensionAmount' : data['lineExtensionAmount'],
-                    'taxExclusiveAmount' : data['taxExclusiveAmount'],
-                    'taxInclusiveAmount' : data['taxInclusiveAmount'],
-                    'chargeTotalAmount' : data['chargeTotalAmount'],
-                    'payableAmount' : data['payableAmount'],
-                    'items' : [],
+    invoice_dict =  {
+                    'InvoiceTypeCode' : data['InvoiceTypeCode'],
+
+                    'AllowanceCharge' :     {
+                                                'ChargeIndicator' : data['AllowanceCharge']['ChargeIndicator'],
+                                                'AllowanceChargeReason' : data['AllowanceCharge']['AllowanceChargeReason'],
+                                                'Amount' : data['AllowanceCharge']['Amount'],
+                                                'TaxCatagory' : {   'ID' : data['AllowanceCharge']['TaxCatagory']['ID'],
+                                                                    'Percent' : data['AllowanceCharge']['TaxCatagory']['Percent'],
+                                                                    'TaxScheme' : { 'ID' : data['AllowanceCharge']['TaxCatagory']['TaxScheme']['ID']},
+                                                                },
+                                            }, 
+
+                    'LegalMonetaryTotal' : {    'LineExtensionAmount' : data['LegalMonetaryTotal']['LineExtensionAmount'],
+                                                'TaxExclusiveAmount' : data['LegalMonetaryTotal']['TaxExclusiveAmount'],
+                                                'TaxInclusiveAmount' : data['LegalMonetaryTotal']['TaxInclusiveAmount'],
+                                                'ChargedTotalAmount' : data['LegalMonetaryTotal']['ChargedTotalAmount'],
+                                                'PayableAmount' : data['LegalMonetaryTotal']['PayableAmount'],
+                                            },
+
+                    'InvoiceLine' : [],
                     }
 
-    for items in data['items']:
-        invoice_dict['items'].append(items)
+    invoiceLine = {}
+
+    for items in data['InvoiceLine']:
+        invoice_dict['InvoiceLine'].append(items)
 
     for user in data_info['users']:
         if user["user_id"] == user_id:
-            user['user_invoices'].append(invoice_dict)
+            user['user_invoice'] = invoice_dict
             break
 
     database.save_data(data_info)

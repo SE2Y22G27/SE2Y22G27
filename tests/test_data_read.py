@@ -5,6 +5,7 @@ from source.database import data
 from source.register import register
 from source.test_clear import clear
 from source.error import InputError
+from source.data_read_helper import decode_user_invoice
 
 def test_valid_input():
     clear()
@@ -58,6 +59,7 @@ def test_valid_input():
         if user['user_id'] == id['auth_user_id']:
             test_dict = user['user_invoice']
             break
+    test_dict = decode_user_invoice(test_dict)
 
     assert  test_dict == sample_dict
 

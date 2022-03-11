@@ -1,59 +1,56 @@
 import xml.etree.ElementTree as ET
+from source.database import data as database
+from source.helpers_auth import check_valid_token, decode_token
 
 # https://docs.python.org/3.8/library/xml.etree.elementtree.html
 # contains all the library functions
 
-value = 10
-cID = "AUD"
-code = 380
-root = ET.Element("Invoice")
+def create_invoice_v1(token):
+    '''
 
-cbc = "cbc:"
-cac = "cac:"
+    Arguments:
+        token (string) : Username thats encrypted into JWT token
 
-# Section 1. Invoice Type Code
-ET.SubElement(root, f"{cbc}InvoiceTypeCode").text = f"{code}"
+    Exceptions:
+        - invalid token
 
-# Section 2. Allowance Charge
-allowance_charge = ET.SubElement(root, f"{cac}AllowanceCharge")
-ET.SubElement(allowance_charge, f"{cbc}ChargeIndicator").text = "true"
-ET.SubElement(allowance_charge, f"{cbc}AllowanceChargeReason").text = "Insurance"
-ET.SubElement(allowance_charge, f"{cbc}Amount", currencyID=f"{cID}").text = "-25"
+    Returns:
+        {}
+    
+    '''
+    data_info = database.get_data()
 
-tax_category = ET.SubElement(allowance_charge, f"{cac}TaxCategory")
-ET.SubElement(tax_category, f"{cbc}ID").text = "S"
-ET.SubElement(tax_category, f"{cbc}Percent").text = "25.0"
+    # ----- Error handling -----
+    # check whether the token is valid 
+    check_valid_token(token)
+    user_id = decode_token(token)
 
-tax_scheme = ET.SubElement(tax_category, f"{cac}TaxScheme")
-ET.SubElement(tax_scheme, f"{cbc}ID").text = "VAT"
+    invoice_dict = {}
+    # Find the user
+    for user in data_info['users']:
+        if user["user_id"] == user_id:
+            # Takes the first user invoice
+            invoice_dict = user['user_invoices'][0]
+            break
 
+    cID = "AUD"
+    cbc = "cbc:"
+    cac = "cac:"
 
-# Section 3. LegalMonetaryTotal
-legal_monetary_total = ET.SubElement(root, f"{cac}LegalMonetaryTotal")
-ET.SubElement(legal_monetary_total, f"{cbc}LineExtensionAmount", currencyID=f"{cID}").text = f"{value}"
-ET.SubElement(legal_monetary_total, f"{cbc}TaxExclusiveAmount", currencyID=f"{cID}").text = f"{value}"
-ET.SubElement(legal_monetary_total, f"{cbc}TaxInclusiveAmount", currencyID=f"{cID}").text = f"{value}"
-ET.SubElement(legal_monetary_total, f"{cbc}PayableRoundingAmount", currencyID=f"{cID}").text = f"{value}"
-ET.SubElement(legal_monetary_total, f"{cbc}PayableAmount", currencyID=f"{cID}").text = f"{value}"
+    root = ET.Element("Invoice")
 
-# Section 4 / 5. InvoiceLines.
-# Just repeates it twice for completeness.
-for i in range(2):
-    invoice_line = ET.SubElement(root, f"{cac}InvoiceLine")
-    ET.SubElement(invoice_line, f"{cbc}ID").text = f"{i}"
-    ET.SubElement(invoice_line, f"{cbc}InvoicedQuantity", unitCode="DAY").text = "-7"
-    ET.SubElement(invoice_line, f"{cbc}LineExtensionAmount", currencyID=f"{cID}").text = "-2800"
+    # Section 3. LegalMonetaryTotal
+    legal_monetary_total = ET.SubElement(root, f"{cac}LegalMonetaryTotal")
+    ET.SubElement(legal_monetary_total, f"{cbc}LineExtensionAmount", currencyID=f"{cID}").text = f"{invoice_dict["lineExtensionAmount"]}"
+    ET.SubElement(legal_monetary_total, f"{cbc}TaxExclusiveAmount", currencyID=f"{cID}").text = f"{invoice_dict["taxExclusiveAmount"]}"
+    ET.SubElement(legal_monetary_total, f"{cbc}TaxInclusiveAmount", currencyID=f"{cID}").text = f"{invoice_dict["taxInclusiveAmount"]}"
+    ET.SubElement(legal_monetary_total, f"{cbc}ChargeTotalAmount", currencyID=f"{cID}").text = f"{invoice_dict["chargeTotalAmount"]}"
+    ET.SubElement(legal_monetary_total, f"{cbc}PayableAmount", currencyID=f"{cID}").text = f"{invoice_dict["payableAmount"]}"
 
-    price = ET.SubElement(invoice_line, f"{cac}Price")
-    ET.SubElement(price, f"{cbc}PriceAmount", currencyID=f"{cID}").text = 400
+    tree = ET.ElementTree(root)
 
+    # print(ET.tostring(root))
+    # Doesn't work but this function should indent the tree and make the tree more readable.
+    #ET.indent(tree, space="\t", level=0)
 
-
-print(ET.tostring(root))
-
-tree = ET.ElementTree(root)
-
-# Doesn't work but this function should indent the tree and make the tree more readable.
-#ET.indent(tree, space="\t", level=0)
-
-tree.write("filename.xml")
+    tree.write(f"{user_id}_e_invoice.xml")

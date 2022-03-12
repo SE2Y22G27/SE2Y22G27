@@ -52,12 +52,12 @@ def create_invoice_v1(token):
     ET.SubElement(allowance_charge, f"{cbc}Amount", currencyID=f"{cID}").text = f"{allowance_charge_dict['Amount']}"
 
     tax_category = ET.SubElement(allowance_charge, f"{cac}TaxCategory")
-    tax_category_dict = invoice_dict["tax_category"]
+    tax_category_dict = invoice_dict["AllowanceCharge"]["TaxCategory"]
     ET.SubElement(tax_category, f"{cbc}ID").text = f"{tax_category_dict['ID']}"
     ET.SubElement(tax_category, f"{cbc}Percent").text =  f"{tax_category_dict['Percent']}"
 
     tax_scheme = ET.SubElement(tax_category, f"{cac}TaxScheme")
-    tax_scheme_dict = invoice_dict["TaxScheme"]
+    tax_scheme_dict = invoice_dict["AllowanceCharge"]["TaxCategory"]["TaxScheme"]
     ET.SubElement(tax_scheme, f"{cbc}ID").text = f"{tax_scheme_dict['ID']}"
 
     # Section 3. LegalMonetaryTotal
@@ -79,11 +79,11 @@ def create_invoice_v1(token):
     for invoice_line_dict in invoice_line_list:
         invoice_line = ET.SubElement(root, f"{cac}InvoiceLine")
         ET.SubElement(invoice_line, f"{cbc}ID").text = f"{invoice_line_dict['ID']}"
-        ET.SubElement(invoice_line, f"{cbc}InvoicedQuantity", unitCode="DAY").text = f"{invoice_line_dict['InvoicedQuantity']}"
+        ET.SubElement(invoice_line, f"{cbc}InvoiceQuantity", unitCode="DAY").text = f"{invoice_line_dict['InvoiceQuantity']}"
         ET.SubElement(invoice_line, f"{cbc}LineExtensionAmount", currencyID=f"{cID}").text =  f"{invoice_line_dict['LineExtensionAmount']}"
 
         price = ET.SubElement(invoice_line, f"{cac}Price")
-        ET.SubElement(price, f"{cbc}PriceAmount", currencyID=f"{cID}").text = f"{invoice_line_dict['PriceAmount']}"
+        ET.SubElement(price, f"{cbc}PriceAmount", currencyID=f"{cID}").text = f"{invoice_line_dict['Price']['PriceAmount']}"
 
 
     tree = ET.ElementTree(root)

@@ -1,3 +1,4 @@
+import sys
 from json import dumps, loads
 from flask import Flask, request
 from source.data_read import data_read_v1
@@ -20,7 +21,7 @@ def user_register():
     return_register = register(email, password, first_name, last_name)
     return dumps({
         'auth_user_id': return_register['auth_user_id'],
-        'token': return_register['token'],
+        'token': return_register['token'],  
     })
 
 @APP.route("/user/login", methods=['POST'])
@@ -50,7 +51,7 @@ def data_read_route():
     return dumps({})
 
 @APP.route("/data/list/v1", methods = ['GET'])
-def data_read_route():
+def data_list_route():
     info = request.get_json()
     invoice_dict = data_read_v1(info['token'])
     return dumps(invoice_dict)

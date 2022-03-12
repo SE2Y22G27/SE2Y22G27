@@ -90,7 +90,7 @@ def create_invoice_v1(token):
 
     # print(ET.tostring(root))
     # Doesn't work but this function should indent the tree and make the tree more readable.
-    #ET.indent(tree, space="\t", level=0)
+    ET.indent(tree, space="\t", level=0)
 
     tree.write(f"{user_id}_e_invoice.xml")
 

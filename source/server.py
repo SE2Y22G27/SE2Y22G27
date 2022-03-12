@@ -10,18 +10,52 @@ from source.convertXML import convertXML
 
 APP = Flask(__name__)
 
-APP.config['TRAP_HTTP_EXCEPTIONS'] = True
-APP.register_error_handler(Exception, defaultHandler)
-
 ''' AUTH FUNCTIONS '''
+@APP.route("/user/register", methods=['POST'])
+def user_register():
+    info = request.get_json()
+    email = info['email']
+    password = info['password']
+    first_name = info['first_name']
+    last_name = info['last_name']
 
+    return_register = register(email, password, first_name, last_name)
+    return dumps({
+        'auth_user_id': return_register['auth_user_id'],
+        'token': return_register['token'],
+    })
 
-''' DATA READ FUNCTION '''
+@APP.route("/user/login", methods=['POST'])
+def user_login():
+    info = request.get_json()
+    email = info['email']
+    password = info['password']
+
+    return_login = login(email, password)
+    return dumps({
+        'auth_user_id': return_login['auth_user_id'],
+        'token': return_login['token']
+    })
+
+@APP.route("/user/logout", methods=['POST'])
+def user_logout():
+    info = request.get_json()
+    token = info['token']
+    logout(token)
+    return dumps({})
+
+''' DATA FUNCTION '''
 @APP.route("/data/read/v1", methods = ['POST'])
 def data_read_route():
     info = request.get_json()
     data_read_v1(info['token'], info['invoice'])
     return {}
+
+@APP.route("/data/list/v1", methods = ['GET'])
+def data_read_route():
+    info = request.get_json()
+    invoice_dict = data_read_v1(info['token'])
+    return dumps(invoice_dict)
 
 ''' CONVERT TO XML FUNCTION '''
 

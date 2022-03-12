@@ -48,11 +48,11 @@ def check_valid_AllowanceCharge(data_AllowanceCharge):
         if value == {}:
             return False
 
-    for value in data_AllowanceCharge['TaxCatagory'].values():
+    for value in data_AllowanceCharge['TaxCategory'].values():
         if value == {}:
             return False
     
-    if data_AllowanceCharge['TaxCatagory']['ID'] == {}:
+    if data_AllowanceCharge['TaxCategory']['ID'] == {}:
         return False
 
     check_valid_ChargeAmount(data_AllowanceCharge['Amount'])
@@ -103,23 +103,4 @@ def check_valid_PriceAmount(data_amount):
 
 def decode_user_invoice(data):
 		return jwt.decode(data, secret, algorithms = ['HS256'])
-'''
-def decode_data(data):
-    decoded_dictionary = {}
-    for key,value in data.items():
-        if key == 'AllowanceCharge':
-            decoded_dictionary[key] = decode_data(data[key])
-        elif key == "TaxCategory":
-            decoded_dictionary[key] = decode_data(data[key])
-        elif key == 'TaxScheme':
-            decoded_dictionary[key] = decode_data(data[key])
-        elif key == "LegalMonetarytotal":
-            decoded_dictionary[key] = decode_data(data[key])
-        elif key == "InvoiceLine":
-            decoded_dictionary[key] = decode_data(data[key])
-        elif key == "PriceAmount":
-            decoded_dictionary[key] = decode_data(data[key])
-        else :
-            decoded_dictionary['InvoiceTypeCode'] = jwt.decode(data['InvoiceTypeCode'], secret, algorithms=['HS256'])
-    return decoded_dictionary
-    '''
+        

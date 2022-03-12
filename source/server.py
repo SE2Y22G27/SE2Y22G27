@@ -6,7 +6,7 @@ from database import data
 from source.login import login
 from source.logout import logout
 from source.register import register
-from source.convertXML import convertXML
+from source.create_xml import create_invoice_v1
 
 APP = Flask(__name__)
 
@@ -58,7 +58,11 @@ def data_read_route():
     return dumps(invoice_dict)
 
 ''' CONVERT TO XML FUNCTION '''
-
+@APP.route("/createXML/v1", methods = ['GET'])
+def create_xml_route():
+    info = request.get_json()
+    create_invoice_v1(info['token'])
+    return dumps({})
 
 if __name__ == "__main__":
     APP.run()

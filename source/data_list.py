@@ -4,6 +4,16 @@ from source.data_read_helper import decode_user_invoices
 import json
 
 def data_list_v1(token):
+    '''
+        Gets the user token and print their saved invoice information
+
+        Arguments:
+            token(String) : jwt token that stores user id
+
+        Returns:
+            void
+    '''
+
     check_valid_token(token)
 
     user_id = decode_token(token)

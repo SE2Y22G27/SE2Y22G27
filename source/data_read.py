@@ -39,9 +39,9 @@ def data_read_v1(token, data):
                                                 'ChargeIndicator' : data['AllowanceCharge']['ChargeIndicator'],
                                                 'AllowanceChargeReason' : data['AllowanceCharge']['AllowanceChargeReason'],
                                                 'Amount' : data['AllowanceCharge']['Amount'],
-                                                'TaxCatagory' : {   'ID' : data['AllowanceCharge']['TaxCatagory']['ID'],
-                                                                    'Percent' : data['AllowanceCharge']['TaxCatagory']['Percent'],
-                                                                    'TaxScheme' : { 'ID' : data['AllowanceCharge']['TaxCatagory']['TaxScheme']['ID']},
+                                                'TaxCategory' : {   'ID' : data['AllowanceCharge']['TaxCategory']['ID'],
+                                                                    'Percent' : data['AllowanceCharge']['TaxCategory']['Percent'],
+                                                                    'TaxScheme' : { 'ID' : data['AllowanceCharge']['TaxCategory']['TaxScheme']['ID']},
                                                                 },
                                             }, 
 

@@ -48,11 +48,11 @@ def check_valid_AllowanceCharge(data_AllowanceCharge):
         if value == {}:
             return False
 
-    for value in data_AllowanceCharge['TaxCatagory'].values():
+    for value in data_AllowanceCharge['TaxCategory'].values():
         if value == {}:
             return False
     
-    if data_AllowanceCharge['TaxCatagory']['ID'] == {}:
+    if data_AllowanceCharge['TaxCategory']['ID'] == {}:
         return False
 
     check_valid_ChargeAmount(data_AllowanceCharge['Amount'])

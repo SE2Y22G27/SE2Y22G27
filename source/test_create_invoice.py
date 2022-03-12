@@ -1,17 +1,21 @@
-from source.data_list import data_list_v1
+import pytest
+from source.register import register
+from source.data_read import data_read_v1
+from source.create_xml import create_invoice_v1
 from source.database import data
 from source.test_clear import clear
-from source.data_read_helper import decode_user_invoice
-from source.register import register
-from source.error import AccessError
-import pytest
-from source.data_read import data_read_v1
 
-def test_valid_invoice():
+
+
+@pytest.fixture
+def initial_clear():
     clear()
-    id = register("test0@gmail.com", "password", "I", "Person")
 
-    sample_dict = { 'InvoiceTypeCode' : 380,
+@pytest.fixture
+def invoice_data():
+    register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
+    
+    sample_data = { 'InvoiceTypeCode' : 380,
 
                     'AllowanceCharge' :     {
                                                 'ChargeIndicator' : 'true',
@@ -51,16 +55,15 @@ def test_valid_invoice():
                     
                     }
 
-    data_read_v1(id['token'], sample_dict)   
-    test_dict = data_list_v1(id['token'])
+    data_read_v1(register_info['token'], sample_data)
 
-    assert  test_dict == sample_dict
+    return register_info
 
-def test_empty_invoice():
-    clear()
-    id = register("test0@gmail.com", "password", "I", "Person")
 
+
+def test_valid_input(initial_clear, invoice_data):
+    # Takes the token of the user, will search database for user
+    # Then takes first invoice made which will contain all the details
     
-    with pytest.raises(AccessError):
-        data_list_v1(id['token'])
-   
+    # When this test is run check if a file has been created with the above information
+    assert create_invoice_v1(invoice_data['token']) == {}

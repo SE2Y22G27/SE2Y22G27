@@ -1,8 +1,6 @@
 from json import dumps, loads
-from flask import Flask, request, send_from_directory
-from error import InputError
+from flask import Flask, request
 from source.data_read import data_read_v1
-from database import data
 from source.login import login
 from source.logout import logout
 from source.register import register
@@ -58,7 +56,7 @@ def data_read_route():
     return dumps(invoice_dict)
 
 ''' CONVERT TO XML FUNCTION '''
-@APP.route("/createXML/v1", methods = ['GET'])
+@APP.route("/invoice/create/v1", methods = ['POST'])
 def create_xml_route():
     info = request.get_json()
     create_invoice_v1(info['token'])

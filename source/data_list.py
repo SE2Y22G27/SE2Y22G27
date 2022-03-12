@@ -1,6 +1,6 @@
 from source.database import data
 from source.helpers_auth import check_valid_token, decode_token
-from source.data_read_helper import decode_user_invoices
+from source.data_read_helper import decode_user_invoice
 import json
 
 def data_list_v1(token):
@@ -23,6 +23,6 @@ def data_list_v1(token):
             if user['user_invoice'] == {}:
                 print("you have saved any invoice in your account")
             else:
-                invoice_dict = decode_user_invoices(user['user_invoice'])
+                invoice_dict = decode_user_invoice(user['user_invoice'])
                 print(invoice_dict)
             break

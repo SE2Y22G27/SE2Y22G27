@@ -17,7 +17,7 @@ def test_valid_invoice():
                                                 'ChargeIndicator' : 'true',
                                                 'AllowanceChargeReason' : 'Insurance',
                                                 'Amount' : -25,
-                                                'TaxCatagory' : {   'ID' : 'S',
+                                                'TaxCategory' : {   'ID' : 'S',
                                                                     'Percent' : 25.0,
                                                                     'TaxScheme' : { 'ID' : 'VAT'},
                                                                 },

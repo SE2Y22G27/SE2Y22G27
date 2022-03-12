@@ -20,6 +20,9 @@ def data_list_v1(token):
 
     for user in data['users']:
         if user['user_id'] == user_id:
-            invoice_dict = decode_user_invoices(user['user_invoice'])
-            json.dumps(invoice_dict)
+            if user['user_invoice'] == {}:
+                print("you have saved any invoice in your account")
+            else:
+                invoice_dict = decode_user_invoices(user['user_invoice'])
+                print(invoice_dict)
             break

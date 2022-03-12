@@ -53,7 +53,7 @@ def register(email: str, password: str, first_name: str, last_name: str):
 		'first_name': first_name,
 		'last_name': last_name,
 		'sessions': {token: temp_session},
-		'user_invoices' : [],
+		'user_invoice' : [],
 	}
 	database['users'].append(user_info)
 	data.save_data(database)

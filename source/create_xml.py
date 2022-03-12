@@ -32,7 +32,8 @@ def create_invoice_v1(token):
             # Takes the first user invoice
             invoice_dict = user['user_invoices']
             break
-
+    invoice_dict = decode_user_invoice(invoice_dict)
+    
     cID = "AUD"
     cbc = "cbc:"
     cac = "cac:"

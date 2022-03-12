@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from source.database import data as database
 from source.helpers_auth import check_valid_token, decode_token
+from source.data_read_helper import decode_user_invoice
 
 # https://docs.python.org/3.8/library/xml.etree.elementtree.html
 # contains all the library functions
@@ -30,7 +31,7 @@ def create_invoice_v1(token):
     for user in data_info['users']:
         if user["user_id"] == user_id:
             # Takes the first user invoice
-            invoice_dict = user['user_invoices']
+            invoice_dict = user['user_invoice']
             break
     invoice_dict = decode_user_invoice(invoice_dict)
     
@@ -51,7 +52,7 @@ def create_invoice_v1(token):
     ET.SubElement(allowance_charge, f"{cbc}Amount", currencyID=f"{cID}").text = f"{allowance_charge_dict['Amount']}"
 
     tax_category = ET.SubElement(allowance_charge, f"{cac}TaxCategory")
-    tax_category_dict = invoice_dict["tax_catagory"]
+    tax_category_dict = invoice_dict["tax_category"]
     ET.SubElement(tax_category, f"{cbc}ID").text = f"{tax_category_dict['ID']}"
     ET.SubElement(tax_category, f"{cbc}Percent").text =  f"{tax_category_dict['Percent']}"
 

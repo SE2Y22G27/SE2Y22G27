@@ -49,7 +49,7 @@ def user_logout():
 def data_read_route():
     info = request.get_json()
     data_read_v1(info['token'], info['invoice'])
-    return {}
+    return dumps({})
 
 @APP.route("/data/list/v1", methods = ['GET'])
 def data_read_route():

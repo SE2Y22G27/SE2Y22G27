@@ -30,7 +30,7 @@ def create_invoice_v1(token):
     for user in data_info['users']:
         if user["user_id"] == user_id:
             # Takes the first user invoice
-            invoice_dict = user['user_invoices'][0]
+            invoice_dict = user['user_invoices']
             break
 
     cID = "AUD"

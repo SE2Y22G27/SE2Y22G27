@@ -1,4 +1,6 @@
 import pytest
+from source.register import register
+from source.data_read import data_read_v1
 from source.create_xml import create_invoice_v1
 from source.database import data
 from source.test_clear import clear

@@ -2,6 +2,7 @@ import sys
 from json import dumps, loads
 from flask import Flask, request
 from source.data_read import data_read_v1
+from source.data_list import data_list_v1
 from source.login import login
 from source.logout import logout
 from source.register import register
@@ -52,8 +53,8 @@ def data_read_route():
 
 @APP.route("/data/list/v1", methods = ['GET'])
 def data_list_route():
-    info = request.get_json()
-    invoice_dict = data_read_v1(info['token'])
+    token = request.args.get('token')
+    invoice_dict = data_list_v1(token)
     return dumps(invoice_dict)
 
 ''' CONVERT TO XML FUNCTION '''

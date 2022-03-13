@@ -5,6 +5,8 @@ from source.create_xml import create_invoice_v1
 from source.database import data
 from source.test_clear import clear
 
+
+
 @pytest.fixture
 def initial_clear():
     clear()
@@ -13,41 +15,45 @@ def initial_clear():
 def invoice_data():
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
     
-    sample_data = {
-        'InvoiceTypeCode':380,
+    sample_data = { 'InvoiceTypeCode' : 380,
 
-        'AllowanceCharge': {
-            'ChargeIndicator':1,
-            'AllowanceChargeReason':1,
-            'Amount':1,
-            'TaxCategory': {
-                'ID':1,
-                'Percent':1,
-                'TaxScheme': {
-                    'ID':1,
-                },
-            },
-        },
+                    'AllowanceCharge' :     {
+                                                'ChargeIndicator' : 'true',
+                                                'AllowanceChargeReason' : 'Insurance',
+                                                'Amount' : -25,
+                                                'TaxCategory' : {   'ID' : 'S',
+                                                                    'Percent' : 25.0,
+                                                                    'TaxScheme' : { 'ID' : 'VAT'},
+                                                                },
+                                            }, 
 
-        'LegalMonetaryTotal': {
-            'LineExtensionAmount':1,
-            'TaxExclusiveAmount':1,
-            'TaxInclusiveAmount':1,
-            'ChargedTotalAmount':1,
-            'PayableAmount':1,
-        },
+                    'LegalMonetaryTotal' : {    'LineExtensionAmount' : -1300,
+                                                'TaxExclusiveAmount' : -1000,
+                                                'TaxInclusiveAmount' : -1656.25,
+                                                'ChargedTotalAmount' : -25,
+                                                'PayableAmount' : -1656.25,
+                                            },
 
-        'InvoiceLine': [
-            {
-                'ID':1,
-                'InvoicedQuantity':1,
-                'LineExtensionAmount':1,
-                'Price': {
-                    'PriceAmount':1,
-                },
-            }
-        ],
-    }
+                    'InvoiceLine' : [
+                                        {
+                                            'ID' : 1, 
+                                            'InvoiceQuantity' : -7,
+                                            'LineExtensionAmount' : -2800,
+                                            'Price' : {
+                                                        'PriceAmount' : 400,
+                                                      },
+                                        },
+                                        {
+                                            'ID' : 2, 
+                                            'InvoiceQuantity' : 3,
+                                            'LineExtensionAmount' : 1500,
+                                            'Price' : {
+                                                        'PriceAmount' : 500,
+                                                      },
+                                        },
+                                    ],
+                    
+                    }
 
     data_read_v1(register_info['token'], sample_data)
 

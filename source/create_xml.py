@@ -85,5 +85,8 @@ def create_invoice_v1(token):
     ET.indent(tree, space="\t", level=0)
 
     tree.write(f"{user_id}_e_invoice.xml")
-
+    
+    for user in data_info['users']:
+        if user['user_id'] == user_id:
+            user['xmlroot'] = ET.tostring(root, encoding='utf8', method='xml')
     return {}

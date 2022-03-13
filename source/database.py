@@ -1,3 +1,4 @@
+from importlib.resources import as_file
 import json
 import pickle
 
@@ -29,9 +30,11 @@ class Database:
 	def __init__(self):
 		self.__data = data_object
 		try:
-			pickle_in = open("data.pickle", "rb")
-			self.__data = pickle.load(pickle_in)
-			pickle_in.close()
+			with open('data_storage.p', 'rb') as file: 
+				self.__data = pickle.load(file)
+			# pickle_in = open("data.pickle", "rb")
+			# self.__data = pickle.load(pickle_in)
+			# pickle_in.close()
 		except:
 			print("There is no data to persist at the moment")
 
@@ -43,9 +46,11 @@ class Database:
 			raise TypeError("not type dictionary")
 		self.__data = new
 		
-		pickle_out = open("data.pickle", "wb")
-		pickle.dump(self.__data, pickle_out)
-		pickle_out.close()
+		with open('data_storage.p', 'wb') as file:
+			pickle.dump(self.__data, file)
+		# pickle_out = open("data.pickle", "wb")
+		# pickle.dump(self.__data, pickle_out)
+		# pickle_out.close()
 
 
 print("Loading Database...")

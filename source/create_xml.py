@@ -1,19 +1,19 @@
 import xml.etree.ElementTree as ET
+# https://docs.python.org/3.8/library/xml.etree.elementtree.html for more information
+
 from source.database import data as database
 from source.helpers_auth import check_valid_token, decode_token
 from source.data_read_helper import decode_user_invoice
 
-# https://docs.python.org/3.8/library/xml.etree.elementtree.html
-# contains all the library functions
-
 def create_invoice_v1(token):
     '''
-
+    Creates an xml file containing the invoice information of a specific user found from (token).
+    
     Arguments:
         token (string) : Username thats encrypted into JWT token
 
     Exceptions:
-        - invalid token
+        - 
 
     Returns:
         {}
@@ -26,6 +26,7 @@ def create_invoice_v1(token):
     check_valid_token(token)
     user_id = decode_token(token)
 
+    # Finds the invoice data for a specific user_id
     invoice_dict = {}
     # Find the user
     for user in data_info['users']:
@@ -65,14 +66,7 @@ def create_invoice_v1(token):
     legal_monetary_total_dict = invoice_dict["LegalMonetaryTotal"]
     for key, value in legal_monetary_total_dict.items():
         ET.SubElement(legal_monetary_total, f"{cbc}{key}", currencyID=f"{cID}").text = f"{value}"
-
-    # ET.SubElement(legal_monetary_total, f"{cbc}LineExtensionAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['lineExtensionAmount']}"
-    # ET.SubElement(legal_monetary_total, f"{cbc}TaxExclusiveAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['taxExclusiveAmount']}"
-    # ET.SubElement(legal_monetary_total, f"{cbc}TaxInclusiveAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['taxInclusiveAmount']}"
-    # ET.SubElement(legal_monetary_total, f"{cbc}ChargeTotalAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['chargeTotalAmount']}"
-    # ET.SubElement(legal_monetary_total, f"{cbc}PayableAmount", currencyID=f"{cID}").text = f"{legal_monetary_total_dict['payableAmount']}"
-
-
+        
     # Section 4 / 5. InvoiceLines.
     # Just repeates it twice for completeness.
     invoice_line_list = invoice_dict["InvoiceLine"]
@@ -85,11 +79,9 @@ def create_invoice_v1(token):
         price = ET.SubElement(invoice_line, f"{cac}Price")
         ET.SubElement(price, f"{cbc}PriceAmount", currencyID=f"{cID}").text = f"{invoice_line_dict['Price']['PriceAmount']}"
 
-
     tree = ET.ElementTree(root)
 
-    # print(ET.tostring(root))
-    # Doesn't work but this function should indent the tree and make the tree more readable.
+    # Indents the xml output and makes it more readable
     ET.indent(tree, space="\t", level=0)
 
     tree.write(f"{user_id}_e_invoice.xml")

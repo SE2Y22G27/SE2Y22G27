@@ -70,7 +70,7 @@ def check_valid_token(token):
 	'''
 	token_format = r'[A-Za-z0-9_%+-]+\.[A-Za-z0-9_%+-]+\.[A-Za-z0-9_%+-]+'
 	if not re.fullmatch(token_format, token):
-		raise AccessError(description="Invalid token")
+		raise AccessError(description="Invalid token format")
 	else:
 		database = data.get_data()
 		decoded_u_id = decode_token(token)
@@ -83,7 +83,7 @@ def check_valid_token(token):
 				found =  True
 				user_sessions = user['sessions']
 				if token not in user_sessions:
-					raise AccessError(description="Invalid token")
+					raise AccessError(description="Inactive token")
 
 def check_email(email, database):
 	'''

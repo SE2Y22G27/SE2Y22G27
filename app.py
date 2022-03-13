@@ -8,10 +8,10 @@ from source.logout import logout
 from source.register import register
 from source.create_xml import create_invoice_v1
 
-APP = Flask(__name__)
+app = Flask(__name__)
 
 ''' AUTH FUNCTIONS '''
-@APP.route("/user/register", methods=['POST'])
+@app.route("/user/register", methods=['POST'])
 def user_register():
     info = request.get_json()
     email = info['email']
@@ -25,7 +25,7 @@ def user_register():
         'token': return_register['token'],  
     })
 
-@APP.route("/user/login", methods=['POST'])
+@app.route("/user/login", methods=['POST'])
 def user_login():
     info = request.get_json()
     email = info['email']
@@ -37,7 +37,7 @@ def user_login():
         'token': return_login['token']
     })
 
-@APP.route("/user/logout", methods=['POST'])
+@app.route("/user/logout", methods=['POST'])
 def user_logout():
     info = request.get_json()
     token = info['token']
@@ -45,24 +45,24 @@ def user_logout():
     return dumps({})
 
 ''' DATA FUNCTION '''
-@APP.route("/data/read/v1", methods = ['POST'])
+@app.route("/data/read/v1", methods = ['POST'])
 def data_read_route():
     info = request.get_json()
     data_read_v1(info['token'], info['invoice'])
     return dumps({})
 
-@APP.route("/data/list/v1", methods = ['GET'])
+@app.route("/data/list/v1", methods = ['GET'])
 def data_list_route():
     token = request.args.get('token')
     invoice_dict = data_list_v1(token)
     return dumps(invoice_dict)
 
 ''' CONVERT TO XML FUNCTION '''
-@APP.route("/invoice/create/v1", methods = ['POST'])
+@app.route("/invoice/create/v1", methods = ['POST'])
 def create_xml_route():
     info = request.get_json()
     create_invoice_v1(info['token'])
     return dumps({})
 
 if __name__ == "__main__":
-    APP.run()
+    app.run()

@@ -1,6 +1,6 @@
 import sys
 from json import dumps, loads
-from flask import Flask, request, reponse_class
+from flask import Flask, request, response_class
 from source.data_read import data_read_v1
 from source.data_list import data_list_v1
 from source.login import login
@@ -61,7 +61,7 @@ def data_list_route():
 @app.route("/invoice/create/v1", methods = ['POST'])
 def create_xml_route():
     info = request.get_json()
-    return app.reponse_class(create_invoice_v1(info['token']), mimetype = 'application/xml')
+    return app.response_class(create_invoice_v1(info['token']), mimetype = 'application/xml')
 
 if __name__ == "__main__":
     app.run()

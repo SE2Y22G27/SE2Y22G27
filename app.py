@@ -69,10 +69,10 @@ def create_xml_route():
 
 @app.route("/invoice/xml/v1", methods = ['GET'])
 def create_xml_v1():
-    info = request.get_json()
+    token = request.args.get('token')
     data_info = data.get_data()
-    check_valid_token(info['token'])
-    user_id = decode_token(info['token'])
+    check_valid_token(token)
+    user_id = decode_token(token)
     for user in data_info['users']:
         if user['user_id'] == user_id:
             root = user['xmlroot']

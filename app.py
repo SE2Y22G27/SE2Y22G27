@@ -1,12 +1,15 @@
 import sys
 from json import dumps, loads
-from flask import Flask, request
+from tabnanny import check
+from flask import Flask, request, Response
 from source.data_read import data_read_v1
 from source.data_list import data_list_v1
 from source.login import login
 from source.logout import logout
 from source.register import register
 from source.create_xml import create_invoice_v1
+from source.helpers_auth import check_valid_token, decode_token
+from source.database import data
 
 app = Flask(__name__)
 
@@ -63,6 +66,17 @@ def create_xml_route():
     info = request.get_json()
     create_invoice_v1(info['token'])
     return dumps({})
+
+@app.route("/invoice/xml/v1", methods = ['GET'])
+def create_xml_v1():
+    info = request.get_json()
+    data_info = data.get_data()
+    check_valid_token(info['token'])
+    user_id = decode_token(info['token'])
+    for user in data_info['users']:
+        if user['user_id'] == user_id:
+            root = user['xmlroot']
+    return Response(root,mimetype='txt/xml')
 
 if __name__ == "__main__":
     app.run()

@@ -61,8 +61,9 @@ def data_list_route():
 @app.route("/invoice/create/v1", methods = ['POST'])
 def create_xml_route():
     info = request.get_json()
-    create_invoice_v1(info['token'])
-    return dumps({})
+    return app.reponse_class(create_invoice_v1(info['token']), mimetype = 'application/xml')
+
+    
 
 if __name__ == "__main__":
     app.run()

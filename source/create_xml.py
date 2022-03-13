@@ -86,4 +86,4 @@ def create_invoice_v1(token):
 
     tree.write(f"{user_id}_e_invoice.xml")
 
-    return ET.tostring(root)
+    return {}

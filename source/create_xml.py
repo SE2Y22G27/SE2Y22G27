@@ -88,5 +88,5 @@ def create_invoice_v1(token):
     
     for user in data_info['users']:
         if user['user_id'] == user_id:
-            user['xmlroot'] = root
+            user['xmlroot'] = ET.tostring(root, encoding='utf8', method='xml')
     return {}

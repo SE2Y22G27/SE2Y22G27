@@ -28,6 +28,4 @@ jobs:
       with:
         name: pylint report
         path: pylint.txt
-    - name: pytester-cov
-      uses: alexanderdamiani/pytester-cov@v1.2.3
 

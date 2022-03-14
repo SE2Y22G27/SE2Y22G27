@@ -24,8 +24,8 @@ def test_system(initial_clear):
     # Test if login is successful
     login_id = login("testA@gmail.com", "1234567890")
     assert register_info['auth_user_id'] == login_id['auth_user_id']
-	assert register_info['token'] != login_id['token']
- 
+    assert register_info['token'] != login_id['token']
+
     # Test if data is properly read and returned in the correct format
     sample_dict = { 'InvoiceTypeCode' : 380,
 
@@ -73,5 +73,5 @@ def test_system(initial_clear):
     assert test_dict == sample_dict
     
     # Need to check if an xml file is created in the proper format.
-    assert create_invoice_v1(invoice_data['token']) == {}
+    assert create_invoice_v1(login_id['token']) == {}
     

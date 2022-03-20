@@ -26,4 +26,6 @@ jobs:
       - name: Run the coverage test 
         run: |
           pytest --cov-fail-under=80
-          coverage report -m
+      - name: Produce coverage report
+        run: |
+          coverage run --source=plugin_module -m pytest -v tests && coverage report -m

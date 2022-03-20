@@ -31,5 +31,5 @@ jobs:
         path: pylint.txt
     - name: Coverage report for the Project
       run: |
-        pytest --cov=tests/
+        pytest --cov
 

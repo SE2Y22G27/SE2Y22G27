@@ -61,7 +61,7 @@
   }
   
   .banner {
-     background-image: url("/Users/catlo/OneDrive/Documents/Atom/JapanHoliday/Images/tokyo.jpg");
+    /* background-image: url(""); */
     background-color: white;
     Need to figure out how to add a blur effect to the background image.
     background-repeat: repeat;

@@ -9,23 +9,27 @@ from source.test_clear import clear
 
 
 @pytest.fixture
-def initial_clear():
+def reset():
+    """ Function for clearing the data before the test """
     clear()
-    
-def test_system(initial_clear):
-    # Test if register is successful
-    # When registering you automatically login
+
+def test_system(reset):
+    '''
+    Test if register is successful
+    When registering you automatically login
+    '''
+
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
     assert register_info['auth_user_id'] == 0
-    
+
     # No error should be called for successful logout
     logout(register_info['token'])
-    
+
     # Test if login is successful
     login_id = login("testA@gmail.com", "1234567890")
     assert register_info['auth_user_id'] == login_id['auth_user_id']
     assert register_info['token'] != login_id['token']
- 
+
     # Test if data is properly read and returned in the correct format
     sample_dict = { 'InvoiceTypeCode' : 380,
 
@@ -37,7 +41,7 @@ def test_system(initial_clear):
                                                                     'Percent' : 25.0,
                                                                     'TaxScheme' : { 'ID' : 'VAT'},
                                                                 },
-                                            }, 
+                                            },
 
                     'LegalMonetaryTotal' : {    'LineExtensionAmount' : -1300,
                                                 'TaxExclusiveAmount' : -1000,
@@ -48,7 +52,7 @@ def test_system(initial_clear):
 
                     'InvoiceLine' : [
                                         {
-                                            'ID' : 1, 
+                                            'ID' : 1,
                                             'InvoiceQuantity' : -7,
                                             'LineExtensionAmount' : -2800,
                                             'Price' : {
@@ -56,7 +60,7 @@ def test_system(initial_clear):
                                                       },
                                         },
                                         {
-                                            'ID' : 2, 
+                                            'ID' : 2,
                                             'InvoiceQuantity' : 3,
                                             'LineExtensionAmount' : 1500,
                                             'Price' : {
@@ -64,14 +68,13 @@ def test_system(initial_clear):
                                                       },
                                         },
                                     ],
-                    
                     }
 
-    data_read_v1(login_id['token'], sample_dict)   
+    data_read_v1(login_id['token'], sample_dict)
     test_dict = data_list_v1(login_id['token'])
 
     assert test_dict == sample_dict
-    
+
     # Need to check if an xml file is created in the proper format.
-    assert create_invoice_v1(invoice_data['token']) == {}
-    
+    assert not create_invoice_v1(test_dict['token'])
+    reset()

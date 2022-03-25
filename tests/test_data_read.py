@@ -17,7 +17,7 @@ def test_valid_input(reset):
     '''
     (Docstring Required)
     '''
-    reset()
+    reset
     uid = register("test0@gmail.com", "password", "I", "Person")
 
     sample_dict = { 'InvoiceTypeCode' : 380,
@@ -75,7 +75,7 @@ def test_invalid_legalmonetarytotal(reset):
     '''
     (Docstring Required)
     '''
-    reset()
+    reset
     uid = register("test0@gmail.com", "password", "I", "Person")
 
     sample_dict = { 'InvoiceTypeCode' : 380,
@@ -124,7 +124,7 @@ def test_invalid_allowance(reset):
     '''
     (Docstring Required)
     '''
-    reset()
+    reset
     uid = register("test0@gmail.com", "password", "I", "Person")
 
     sample_dict = { 'InvoiceTypeCode' : 380,
@@ -173,7 +173,7 @@ def test_invalid_invoicetypecode(reset):
     '''
     (Docstring Required)
     '''
-    reset()
+    reset
     uid = register("test0@gmail.com", "password", "I", "Person")
 
     sample_dict = { 'InvoiceTypeCode' : {},
@@ -222,7 +222,7 @@ def test_invalid_invoiceline(reset):
     '''
     (Docstring Required)
     '''
-    reset()
+    reset
     uid = register("test0@gmail.com", "password", "I", "Person")
 
     sample_dict = { 'InvoiceTypeCode' : 380,

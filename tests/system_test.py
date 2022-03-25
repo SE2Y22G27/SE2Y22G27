@@ -76,5 +76,5 @@ def test_system(reset):
     assert test_dict == sample_dict
 
     # Need to check if an xml file is created in the proper format.
-    assert not create_invoice_v1(test_dict['token'])
-    reset()
+    assert not create_invoice_v1(login_id['token'])
+    reset

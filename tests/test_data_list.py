@@ -17,7 +17,7 @@ def test_valid_invoice(reset):
     '''
     Test to see data list creates valid invoice prints
     '''
-    reset()
+    reset
     uid = register("test0@gmail.com", "password", "I", "Person")
 
     sample_dict = { 'InvoiceTypeCode' : 380,
@@ -68,7 +68,7 @@ def test_empty_invoice(reset):
     '''
     Tests data_list with empty data
     '''
-    reset()
+    reset
     uid = register("test0@gmail.com", "password", "I", "Person")
 
     with pytest.raises(AccessError):

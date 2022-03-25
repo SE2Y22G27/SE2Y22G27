@@ -1,0 +1,38 @@
+<Invoice>
+	<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+	<cac:AllowanceCharge>
+		<cbc:ChargeIndicator>true</cbc:ChargeIndicator>
+		<cbc:AllowanceChargeReason>Insurance</cbc:AllowanceChargeReason>
+		<cbc:Amount currencyID="AUD">-25</cbc:Amount>
+		<cac:TaxCategory>
+			<cbc:ID>S</cbc:ID>
+			<cbc:Percent>25.0</cbc:Percent>
+			<cac:TaxScheme>
+				<cbc:ID>VAT</cbc:ID>
+			</cac:TaxScheme>
+		</cac:TaxCategory>
+	</cac:AllowanceCharge>
+	<cac:LegalMonetaryTotal>
+		<cbc:LineExtensionAmount currencyID="AUD">-1300</cbc:LineExtensionAmount>
+		<cbc:TaxExclusiveAmount currencyID="AUD">-1000</cbc:TaxExclusiveAmount>
+		<cbc:TaxInclusiveAmount currencyID="AUD">-1656.25</cbc:TaxInclusiveAmount>
+		<cbc:ChargedTotalAmount currencyID="AUD">-25</cbc:ChargedTotalAmount>
+		<cbc:PayableAmount currencyID="AUD">-1656.25</cbc:PayableAmount>
+	</cac:LegalMonetaryTotal>
+	<cac:InvoiceLine>
+		<cbc:ID>1</cbc:ID>
+		<cbc:InvoiceQuantity unitCode="DAY">-7</cbc:InvoiceQuantity>
+		<cbc:LineExtensionAmount currencyID="AUD">-2800</cbc:LineExtensionAmount>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="AUD">400</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+	<cac:InvoiceLine>
+		<cbc:ID>2</cbc:ID>
+		<cbc:InvoiceQuantity unitCode="DAY">3</cbc:InvoiceQuantity>
+		<cbc:LineExtensionAmount currencyID="AUD">1500</cbc:LineExtensionAmount>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="AUD">500</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+</Invoice>

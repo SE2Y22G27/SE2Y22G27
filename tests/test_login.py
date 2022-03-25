@@ -14,7 +14,7 @@ def register_a(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
     return register_info
 
@@ -23,7 +23,7 @@ def register_b(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     register_info = register("testB@gmail.com", "1234567890", "Person", "BB")
     return register_info
 
@@ -32,7 +32,7 @@ def register_c(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     register_info = register("testC@gmail.com", "1234567890", "Person", "CC")
     return register_info
 
@@ -40,7 +40,7 @@ def test_no_register(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         login("test@gmail.com", "password")
 
@@ -48,7 +48,7 @@ def test_login_email_fail(reset, register_a):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         login("hello@gmail.com", "password")
 
@@ -56,7 +56,7 @@ def test_login_password_fail(reset, register_a):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         login("testA@gmail.com", "password")
 
@@ -64,7 +64,7 @@ def test_register_login_success(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     register_id = register("test@gmail.com", "password", "Person", "Person")
     login_id = login("test@gmail.com", "password")
     assert register_id['auth_user_id'] == login_id['auth_user_id']
@@ -74,7 +74,7 @@ def test_multiple_register_login(reset, register_a, register_b, register_c):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     login0 = login("testA@gmail.com", "1234567890")
     login1 = login("testB@gmail.com", "1234567890")
     login2 = login("testC@gmail.com", "1234567890")

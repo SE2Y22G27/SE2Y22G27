@@ -36,7 +36,7 @@ def test_invalid_email(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("hellothere", "password", "Person", "Person")
 
@@ -44,7 +44,7 @@ def test_email_exists(reset, register_a):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("testA@gmail.com", "1234567890", "Person", "AA")
 
@@ -52,7 +52,7 @@ def test_invalid_password_length(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("test@gmail.com","A", "Person", "Person")
 
@@ -60,7 +60,7 @@ def test_invalid_name_length1(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("test@gmail.com", "password", "", "Person")
 
@@ -68,7 +68,7 @@ def test_invalid_name_length2(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("test@gmail.com", "password", "Person", "")
 
@@ -76,7 +76,7 @@ def test_invalid_name_length3(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("test@gmail.com", "password", "nameismorethanthirtytocheckthatthisworks", "Person")
 
@@ -84,7 +84,7 @@ def test_invalid_name_length4(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("test@gmail.com", "password", "Person", "nameismorethanthirtytocheckthatthisworks")
 
@@ -92,7 +92,7 @@ def test_invalid_name_length5(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("test@gmail.com", "password", "", "")
 
@@ -100,7 +100,7 @@ def test_invalid_name_length6(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     with pytest.raises(InputError):
         register("test@gmail.com", "password", "nameismorethanthirtytocheckthatthisworks",
         "nameismorethanthirtytocheckthatthisworks")
@@ -109,7 +109,7 @@ def test_name_edge_case(reset):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     id0 = register("test0@gmail.com", "password", "I", "Person")
     id1 = register("test1@gmail.com", "password", "Person", "I")
     id2 = register("test2@gmail.com", "password", "I", "I")
@@ -129,13 +129,13 @@ def test_register_success(reset, register_a):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     assert register_a['auth_user_id'] == 0
 
 def test_multiple_registers(reset, register_a, register_b, register_c):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     assert register_a['auth_user_id'] != register_b['auth_user_id'] != register_c['auth_user_id']
     assert register_a['token'] != register_b['token'] != register_c['token']

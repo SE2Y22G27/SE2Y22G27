@@ -22,7 +22,7 @@ def test_invalid_token_format(reset, register_a):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     test_token = "hello"
     with pytest.raises(AccessError):
         logout(test_token)
@@ -31,7 +31,7 @@ def test_invalid_token(reset, register_a):
     '''
     (Empty Docstring)
     '''
-    reset()
+    reset
     test_token = "aaa.bbb.ccc"
     with pytest.raises(AccessError):
         logout(test_token)
@@ -42,6 +42,6 @@ def test_logout_success(reset, register_a):
 	does not return anything. So expected behaviour is that
     this test passes without any errors.
     '''
-    reset()
+    reset
     token = register_a['token']
     logout(token)

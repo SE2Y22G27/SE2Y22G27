@@ -16,7 +16,7 @@ def invoice_data(reset):
     '''
     Test to check if invoice has been created
     '''
-    reset()
+    reset
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
 
     sample_data = { 'InvoiceTypeCode' : 380,
@@ -71,5 +71,5 @@ def test_valid_input(reset, invoice_data):
 
     When this test is run check if a file has been created with the above information
     '''
-    reset()
+    reset
     assert not create_invoice_v1(invoice_data['token'])

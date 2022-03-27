@@ -1,6 +1,10 @@
-import sys
-from json import dumps, loads
-from tabnanny import check
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+
+# import sys
+from json import dumps #, loads
+# from tabnanny import check
 from flask import Flask, request, Response
 from source.data_read import data_read_v1
 from source.data_list import data_list_v1
@@ -25,7 +29,7 @@ def user_register():
     return_register = register(email, password, first_name, last_name)
     return dumps({
         'auth_user_id': return_register['auth_user_id'],
-        'token': return_register['token'],  
+        'token': return_register['token'],
     })
 
 @app.route("/user/login", methods=['POST'])

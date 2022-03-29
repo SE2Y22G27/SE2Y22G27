@@ -7,36 +7,26 @@
   </head>
 
   <body>
-    <div class="banner">
-      <h1 class="header">API Create Invoice</h1>
-      <div class="navcontainer">
+    <header>
+      <h1>API Create Invoice</h1>
+      <nav>
+        
+      </nav>
+    </header>
 
-        <div class="card">
-          <h2>Service 1</h2>
-          <a href="">
-            <img class="navimg"  src="" alt="Service 1 Webpage">
-          </a>
-        </div>
+    <h2>Login</h2>
 
-        <div class="card">
-          <h2>Service 2</h2>
-          <a href="">
-            <img class="navimg" src="" alt="Service 2 Webpage">
-          </a>
-        </div>
+    <form class="Login" action="invoice_creator.html" method="post">
+      <!-- Login Section -->
+      <label for="username"><b>Username:</b></label>
+      <input type="text" placeholder="Enter Username" name="username" required>
 
-        <div class="card">
-          <h2>Service 3</h2>
-          <a href="">
-            <img class="navimg"  src="" alt="Service 3 Webpage">
-          </a>
-        </div>
-      </div>
-    </div>
-    <footer>
-      <p>Created by Elliot, Raymond, Yuqiang, Zeu</p>
-      <p>@2020</p>
-      <p>Contact Us: +00 000 000 000</p>
-    </footer>
+      <label for="password"><b>Password:</b></label>
+      <input type="password" placeholder="Enter Password" name="Password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p>Need an account? <a href="register.html">Sign up</a></p>
   </body>
 </html>

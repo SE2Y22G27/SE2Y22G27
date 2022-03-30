@@ -68,7 +68,7 @@ def create_xml_route():
     return dumps({})
 
 @app.route("/invoice/xml/v1", methods = ['GET'])
-def create_xml_v1():
+def return_xml_rout():
     token = request.args.get('token')
     data_info = data.get_data()
     check_valid_token(token)
@@ -77,6 +77,13 @@ def create_xml_v1():
         if user['user_id'] == user_id:
             root = user['xmlroot']
     return Response(root,mimetype='txt/xml')
+
+@app.route("/data/xml/v1", methods=['POST'])
+def data_xml_route():
+    info = request.get_json()
+    data_read_v1(info['token'], info['invoice'])
+    create_invoice_v1(info['token'])
+    return dumps({})
 
 if __name__ == "__main__":
     app.run()

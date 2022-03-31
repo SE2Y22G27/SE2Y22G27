@@ -40,7 +40,7 @@ def test_invalid_email(reset):
     with pytest.raises(InputError):
         register("hellothere", "password", "Person", "Person")
 
-def test_email_exists(reset, register_a):
+def test_email_exists(reset): # removed register_a
     '''
     (Empty Docstring)
     '''

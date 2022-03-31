@@ -44,7 +44,7 @@ def test_no_register(reset):
     with pytest.raises(InputError):
         login("test@gmail.com", "password")
 
-def test_login_email_fail(reset, register_a):
+def test_login_email_fail(reset): # removed register_a
     '''
     (Empty Docstring)
     '''
@@ -52,7 +52,7 @@ def test_login_email_fail(reset, register_a):
     with pytest.raises(InputError):
         login("hello@gmail.com", "password")
 
-def test_login_password_fail(reset, register_a):
+def test_login_password_fail(reset): # removed register_a
     '''
     (Empty Docstring)
     '''

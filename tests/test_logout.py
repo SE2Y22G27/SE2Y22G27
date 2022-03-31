@@ -18,7 +18,7 @@ def register_a():
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
     return register_info
 
-def test_invalid_token_format(reset, register_a):
+def test_invalid_token_format(reset): # removed register_a
     '''
     (Empty Docstring)
     '''
@@ -27,7 +27,7 @@ def test_invalid_token_format(reset, register_a):
     with pytest.raises(AccessError):
         logout(test_token)
 
-def test_invalid_token(reset, register_a):
+def test_invalid_token(reset): # removed register_a
     '''
     (Empty Docstring)
     '''

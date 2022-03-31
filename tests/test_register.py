@@ -108,6 +108,7 @@ def test_name_edge_case():
 					"I", "nameisexactlythirtytocheck1234")
     id7 = register("test7@gmail.com", "password",
 					"nameisexactlythirtytocheck1234", "I")
+
     num = [0,1,2,3,4,5,6,7]
     ids = [id0,id1,id2,id3,id4,id5,id6,id7]
 

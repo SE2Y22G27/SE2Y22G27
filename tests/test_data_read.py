@@ -2,12 +2,14 @@
     import pytest test to test all the conditions
 '''
 import pytest
+# from calendar import c
 from source.data_read import data_read_v1
 from source.database import data
 from source.register import register
 from source.test_clear import clear
 from source.error import InputError
 from source.data_read_helper import decode_user_invoice
+
 
 def test_valid_input():
     '''
@@ -60,11 +62,12 @@ def test_valid_input():
     data_dict = data.get_data()
     for user in data_dict['users']:
         if user['user_id'] == register_info['auth_user_id']:
+
             test_dict = user['user_invoice']
             break
     test_dict = decode_user_invoice(test_dict)
 
-    assert  test_dict == sample_dict
+    assert test_dict == sample_dict
 
 def test_invalid_legalmonetarytotal():
     '''
@@ -110,6 +113,7 @@ def test_invalid_legalmonetarytotal():
             },
                         ],
                     }
+
     with pytest.raises(InputError):
         data_read_v1(register_info['token'], sample_dict)
 
@@ -167,6 +171,7 @@ def test_invalid_invoicetypecode():
     '''
     clear()
     register_info = register("test0@gmail.com", "password", "I", "Person")
+
 
     sample_dict = { 'InvoiceTypeCode' : {},
         'AllowanceCharge' : {
@@ -256,3 +261,4 @@ def test_invalid_invoiceline():
 
     with pytest.raises(InputError):
         data_read_v1(register_info['token'], sample_dict)
+

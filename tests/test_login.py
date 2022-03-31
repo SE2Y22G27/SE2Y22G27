@@ -44,6 +44,7 @@ def test_register_login_success():
     assert register_id['auth_user_id'] == login_id['auth_user_id']
     assert register_id['token'] != login_id['token']
 
+
 def test_multiple_register_login(register_a, register_b, register_c):
     '''
         testing multiple register and login

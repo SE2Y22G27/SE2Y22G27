@@ -56,7 +56,7 @@ def test_valid_invoice():
     data_read_v1(register_info['token'], sample_dict)
     test_dict = data_list_v1(register_info['token'])
 
-    assert  test_dict == sample_dict
+    assert test_dict == sample_dict
 
 def test_empty_invoice():
     '''
@@ -67,4 +67,4 @@ def test_empty_invoice():
 
     with pytest.raises(AccessError):
         data_list_v1(register_info['token'])
-   
+

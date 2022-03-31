@@ -74,4 +74,3 @@ def test_system(initial_clear):
     
     # Need to check if an xml file is created in the proper format.
     # assert create_invoice_v1(invoice_data['token']) == {}
-    

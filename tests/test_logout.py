@@ -37,5 +37,6 @@ def test_logout_success():
 	# this test passes without any errors.
     clear()
     register_a = register("testA@gmail.com", "1234567890", "Person", "AA")
+
     token = register_a['token']
     logout(token)

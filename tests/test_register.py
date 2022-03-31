@@ -133,4 +133,3 @@ def test_multiple_registers():
     register_c = register("testC@gmail.com", "1234567890", "Person", "CC")
     assert register_a['auth_user_id'] != register_b['auth_user_id'] != register_c['auth_user_id']
     assert register_a['token'] != register_b['token'] != register_c['token']
-    

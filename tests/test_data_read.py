@@ -261,4 +261,3 @@ def test_invalid_invoiceline():
 
     with pytest.raises(InputError):
         data_read_v1(register_info['token'], sample_dict)
-

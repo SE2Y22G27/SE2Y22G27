@@ -67,4 +67,3 @@ def test_empty_invoice():
 
     with pytest.raises(AccessError):
         data_list_v1(register_info['token'])
-

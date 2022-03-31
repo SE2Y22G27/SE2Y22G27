@@ -1,6 +1,10 @@
-import sys
-from json import dumps, loads
-from tabnanny import check
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+
+# import sys
+from json import dumps # loads
+# from tabnanny import check
 from flask import Flask, request, Response
 from source.data_read import data_read_v1
 from source.data_list import data_list_v1
@@ -25,7 +29,7 @@ def user_register():
     return_register = register(email, password, first_name, last_name)
     return dumps({
         'auth_user_id': return_register['auth_user_id'],
-        'token': return_register['token'],  
+        'token': return_register['token'],
     })
 
 @app.route("/user/login", methods=['POST'])
@@ -47,7 +51,7 @@ def user_logout():
     logout(token)
     return dumps({})
 
-''' DATA FUNCTION '''
+# DATA FUNCTION
 @app.route("/data/read/v1", methods = ['POST'])
 def data_read_route():
     info = request.get_json()
@@ -60,7 +64,7 @@ def data_list_route():
     invoice_dict = data_list_v1(token)
     return dumps(invoice_dict)
 
-''' CONVERT TO XML FUNCTION '''
+# CONVERT TO XML FUNCTION
 @app.route("/invoice/create/v1", methods = ['POST'])
 def create_xml_route():
     info = request.get_json()

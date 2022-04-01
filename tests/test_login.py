@@ -7,6 +7,30 @@ from source.register import register
 from source.test_clear import clear
 from source.error import InputError
 
+@pytest.fixture
+def register_a():
+    '''
+    (Empty Docstring)
+    '''
+    register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
+    return register_info
+
+@pytest.fixture
+def register_b():
+    '''
+    (Empty Docstring)
+    '''
+    register_info = register("testB@gmail.com", "1234567890", "Person", "BB")
+    return register_info
+
+@pytest.fixture
+def register_c():
+    '''
+    (Empty Docstring)
+    '''
+    register_info = register("testC@gmail.com", "1234567890", "Person", "CC")
+    return register_info
+
 def test_no_register():
     '''
         test error when the email hasn't been registered

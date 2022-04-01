@@ -14,12 +14,12 @@ def initial_clear():
     '''
     clear()
 
-def test_system(): # initial_clear
+def test_system(initial_clear): # initial_clear
     '''
     Test if register is successful
     When registering you automatically login
     '''
-    # initial_clear
+    initial_clear
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
     assert register_info['auth_user_id'] == 0
 

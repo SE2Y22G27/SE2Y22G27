@@ -5,6 +5,7 @@ This file contains helper functions used in all auth functions.
 import uuid
 import re
 import jwt
+import datetime
 
 from source.config import secret
 from source.database import data
@@ -22,7 +23,8 @@ def generate_session_id():
 def generate_token(session_id, user_id):
     '''
 	Generates a JSON Web Token (JWT) using the SECRET global variable
-	and the HS256 algorithm. The token is created from the session ID...
+	and the HS256 algorithm. The token is created from the session ID and the user ID.
+	The token lasts for 30 minutes or 1800 seconds so after that the token will expire.
 
 	Arguments:
 		session_id (UUID) - Current session ID
@@ -34,6 +36,7 @@ def generate_token(session_id, user_id):
     info = {
 		'session_id': str(session_id),
 		'user_id': user_id,
+		'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=1800)
 	}
 
     token = jwt.encode(info, secret, algorithm='HS256')
@@ -61,12 +64,12 @@ def check_valid_token(token):
 	Checks if the token is invalid under 2 checks.
 	The first check is to see if the format of the token is correct.
 		Format: xxx.yyy.zzz
-	The second check is to see if the token is logged in.
+	The second check is to see if the token is logged in or already expired.
 
 	Arguments:
 		token (string) - Token to be checked
 
-	If found invalid, raise an Exception, if not, nothing is returned.
+	If found invalid, raise an AccessError, if not, nothing is returned.
     '''
     token_format = r'[A-Za-z0-9_%+-]+\.[A-Za-z0-9_%+-]+\.[A-Za-z0-9_%+-]+'
     if not re.fullmatch(token_format, token):

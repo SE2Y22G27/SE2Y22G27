@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>API Create Invoice</title>
-    <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}" type="text/css">
   </head>
 
   <body>
@@ -13,7 +13,7 @@
 
     <h2>Create Invoice</h2>
 
-    <form class="Invoice" action="{{ url_for('invoice/create/v1') }}" method="post">
+    <form class="Invoice" action="{{ url_for('create_xml_route') }}" method="post">
       <!-- Register Section -->
       <div type='container'>
         <label for="email"><b>Email:</b></label>

@@ -13,11 +13,15 @@ from source.database import data
 
 app = Flask(__name__)
 
-#''' AUTH FUNCTIONS '''
 @app.route("/")
-def home():
+def home_page():
     return render_template('index.html')
 
+@app.route("/register")
+def register_page():
+    return render_template('register.html')
+
+#''' AUTH FUNCTIONS '''
 @app.route("/user/register", methods=['POST'])
 def user_register():
     email = request.form['email']
@@ -71,4 +75,4 @@ def create_xml_route():
     
 
 if __name__ == "__main__":
-    app.run(port=3000)
+    app.run(host='0.0.0.0', port=0)

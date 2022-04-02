@@ -18,10 +18,34 @@
       <div type='container'>
         <label for="email"><b>Email:</b></label>
         <input type="text" placeholder="Enter Email" name="email" required>
+        <br>
 
-        <label for="data"><b>Data:</b></label>
-        <textarea name="name" placeholder="Enter the Data in this format:" required></textarea>
+        <div type='invoice_creator'>
+          <label><b>Allowance Charge</b></label>
+          <input type="text" placeholder="ChargeIndicator" name="ChargeIndicator">
+          <input type="text" placeholder="AllowanceChargeReason" name="AllowanceChargeReason">
+          <input type="number" placeholder="Amount" name="Amount">
 
+          <label><b>Tax Category</b></label>
+          <input type="text" placeholder="TaxCategoryID" name="TaxCategoryID">
+          <input type="number" placeholder="Percent" name="Percent">
+
+          <label><b>Tax Scheme</b></label>
+          <input type="text" placeholder="TaxSchemeID" name="TaxSchemeID">
+
+          <label><b>Legal Monetary Total</b></label>
+          <input type="number" placeholder="LineExtensionAmount" name="LineExtensionAmount">
+          <input type="number" placeholder="TaxExclusiveAmount" name="TaxExclusiveAmount">
+          <input type="number" placeholder="TaxInclusiveAmount" name="TaxInclusiveAmount">
+          <input type="number" placeholder="ChargedTotalAmount" name="ChargedTotalAmount">
+          <input type="number" placeholder="PayableAmount" name="PayableAmount">
+
+          <label><b>Invoice Line</b></label>
+          <input type="text" placeholder="InvoiceLineID" name="InvoiceLineID">
+          <input type="text" placeholder="InvoicedQuantity" name="InvoicedQuantity">
+          <input type="text" placeholder="LineExtensionAmount" name="LineExtensionAmount">
+          <input type="text" placeholder="PriceAmount" name="PriceAmount">
+        </div>
 
         <button type="submit">Create</button>
       </div>

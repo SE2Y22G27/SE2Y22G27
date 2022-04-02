@@ -1,6 +1,5 @@
 import sys
 from json import dumps, loads
-from tabnanny import check
 from flask import Flask, request, Response, render_template
 from source.data_read import data_read_v1
 from source.data_list import data_list_v1
@@ -34,7 +33,7 @@ def user_register():
         'auth_user_id': return_register['auth_user_id'],
         'token': return_register['token'],  
     })
-    return render_template('invoice_creator.html', data=data)
+    return render_template('invoice_creator.html', token=return_register['token'])
 
 @app.route("/user/login", methods=['POST'])
 def user_login():
@@ -47,32 +46,50 @@ def user_login():
         'token': return_login['token']
     })
     
-    return render_template('invoice_creator.html', data=data)
+    return render_template('invoice_creator.html', token=return_login['token'])
     
-
-# @app.route("/user/logout", methods=['POST'])
-# def user_logout():
-#    # No option to logout
-
-# #''' DATA FUNCTION '''
-# @app.route("/data/read/v1", methods = ['POST'])
-# def data_read_route():
-#     # merged
-   
-
-# @app.route("/data/list/v1", methods = ['GET'])
-# def data_list_route():
-#     # merged
-
 #''' CONVERT TO XML FUNCTION '''
 @app.route("/invoice/create/v1", methods = ['POST'])
 def create_xml_route():
+    #info = request.get_json()
+    token = request.form['JWTToken']
+    
+    invoice_dict = { 'InvoiceTypeCode' : 380,
+        'AllowanceCharge' : {
+            'ChargeIndicator' : request.form['ChargeIndicator'],
+            'AllowanceChargeReason' : request.form['AllowanceChargeReason'],
+            'Amount' : request.form['Amount'],
+            'TaxCategory' : {   'ID' : request.form['TaxCategoryID'],
+                'Percent' : request.form['Percent'],
+                'TaxScheme' : { 'ID' : request.form['TaxSchemeID']},
+                            },
+                    },
+
+        'LegalMonetaryTotal' : {'LineExtensionAmount' : request.form['LineExtensionAmount'],
+                                'TaxExclusiveAmount' : request.form['TaxExclusiveAmount'],
+                                'TaxInclusiveAmount' : request.form['TaxInclusiveAmount'],
+                                'ChargedTotalAmount' : request.form['ChargedTotalAmount'],
+                                'PayableAmount' : request.form['PayableAmount'],
+                                },
+
+        'InvoiceLine' : [
+            {
+                'ID' : request.form['InvoiceLineID'],
+                'InvoiceQuantity' : request.form['InvoicedQuantity'],
+                'LineExtensionAmount' : request.form['LineExtensionAmount'],
+                'Price' : {
+                    'PriceAmount' : request.form['PriceAmount'],
+                        }
+            }
+                        ],
+                    }
+    
+    
+    data_read_v1(token, invoice_dict)
+    create_invoice_v1(token)
     
     return render_template('display_invoice.html')
 
-# @app.route("/invoice/xml/v1", methods = ['GET'])
-# def create_xml_v1():
-    
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=0)

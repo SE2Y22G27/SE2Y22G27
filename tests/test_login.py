@@ -1,3 +1,6 @@
+'''
+    import pytest to test if the auth login behave normally
+'''
 import pytest
 from source.login import login
 from source.register import register
@@ -5,76 +8,76 @@ from source.test_clear import clear
 from source.error import InputError
 
 @pytest.fixture
-def reset():
-    """ Function for clearing the data before the test """
-    clear()
-
-@pytest.fixture
-def register_a(reset):
+def register_a():
     '''
     (Empty Docstring)
     '''
-    reset
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
     return register_info
 
 @pytest.fixture
-def register_b(reset):
+def register_b():
     '''
     (Empty Docstring)
     '''
-    reset
     register_info = register("testB@gmail.com", "1234567890", "Person", "BB")
     return register_info
 
 @pytest.fixture
-def register_c(reset):
+def register_c():
     '''
     (Empty Docstring)
     '''
-    reset
     register_info = register("testC@gmail.com", "1234567890", "Person", "CC")
     return register_info
 
-def test_no_register(reset):
+def test_no_register():
     '''
-    (Empty Docstring)
+        test error when the email hasn't been registered
     '''
-    reset
+    clear()
     with pytest.raises(InputError):
         login("test@gmail.com", "password")
 
-def test_login_email_fail(reset, register_a):
+def test_login_email_fail():
     '''
-    (Empty Docstring)
+        testing the email is invalid
     '''
-    reset
+    clear()
+    register("testA@gmail.com", "1234567890", "Person", "AA")
     with pytest.raises(InputError):
         login("hello@gmail.com", "password")
 
-def test_login_password_fail(reset, register_a):
+def test_login_password_fail():
     '''
-    (Empty Docstring)
+        testing the password is invalid
     '''
-    reset
+    clear()
+    register("testA@gmail.com", "1234567890", "Person", "AA")
     with pytest.raises(InputError):
         login("testA@gmail.com", "password")
 
-def test_register_login_success(reset):
+def test_register_login_success():
     '''
-    (Empty Docstring)
+        testing all the input are valid and the funciton
+        performs normally
     '''
-    reset
+    clear()
     register_id = register("test@gmail.com", "password", "Person", "Person")
     login_id = login("test@gmail.com", "password")
     assert register_id['auth_user_id'] == login_id['auth_user_id']
     assert register_id['token'] != login_id['token']
 
-def test_multiple_register_login(reset, register_a, register_b, register_c):
+
+def test_multiple_register_login(register_a, register_b, register_c):
     '''
-    (Empty Docstring)
+        testing multiple register and login
     '''
-    reset
+    clear()
+    register_a = register("testA@gmail.com", "1234567890", "Person", "AA")
+    register_b = register("testB@gmail.com", "1234567890", "Person", "BB")
+    register_c = register("testC@gmail.com", "1234567890", "Person", "CC")
+
     login0 = login("testA@gmail.com", "1234567890")
     login1 = login("testB@gmail.com", "1234567890")
     login2 = login("testC@gmail.com", "1234567890")

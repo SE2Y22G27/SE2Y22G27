@@ -1,3 +1,4 @@
+# pylint: disable-all
 '''
 This file contains configuration info.
 '''

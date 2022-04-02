@@ -4,21 +4,22 @@ from source.login import login
 from source.logout import logout
 from source.data_read import data_read_v1
 from source.data_list import data_list_v1
-from source.create_xml import create_invoice_v1
 from source.test_clear import clear
 
 
 @pytest.fixture
-def reset():
-    """ Function for clearing the data before the test """
+def initial_clear():
+    '''
+    Clearing the database
+    '''
     clear()
 
-def test_system(reset):
+def test_system(initial_clear): # initial_clear
     '''
     Test if register is successful
     When registering you automatically login
     '''
-
+    initial_clear
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
     assert register_info['auth_user_id'] == 0
 
@@ -76,5 +77,4 @@ def test_system(reset):
     assert test_dict == sample_dict
 
     # Need to check if an xml file is created in the proper format.
-    assert not create_invoice_v1(login_id['token'])
-    reset
+    # assert create_invoice_v1(invoice_data['token']) == {}

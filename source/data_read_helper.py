@@ -90,13 +90,13 @@ def check_valid_InvoiceLine(data_InvoiceLine):
     return True
 
 def check_valid_ChargeAmount(data_amount):
-    if data_amount < 0:
+    if int(data_amount) < 0:
         return True
 
     return False
 
 def check_valid_PriceAmount(data_amount):
-    if data_amount >= 0:
+    if int(data_amount) >= 0:
         return True
 
     return False

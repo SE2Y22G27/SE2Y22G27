@@ -14,12 +14,15 @@ app = Flask(__name__)
 
 @app.route("/")
 def home_page():
-    return render_template('display_invoice.html')
-    #return render_template('index.html')
+    return render_template('index.html')
 
 @app.route("/register")
 def register_page():
     return render_template('register.html')
+
+@app.route("/create/invoice", methods=['POST'])
+def create_invoice_page():
+    return render_template('invoice_creator.html', token=request.form['JWTToken'])
 
 #''' AUTH FUNCTIONS '''
 @app.route("/user/register", methods=['POST'])
@@ -89,7 +92,13 @@ def create_xml_route():
     data_read_v1(token, invoice_dict)
     create_invoice_v1(token)
     
-    return render_template('display_invoice.html')
+    return render_template('display_invoice.html', token=token)
+
+@app.route("/invoice/send/v1", methods = ['POST'])
+def send_invoice():
+    
+    return render_template('success.html', email=request.form['email'], token=request.form['JWTToken'])
+    
 
 
 if __name__ == "__main__":

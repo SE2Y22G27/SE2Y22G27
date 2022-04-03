@@ -36,6 +36,19 @@ button {
   text-align: center;
 } */
 
+.center {
+  margin: auto;
+  width: 60%;
+  border: 3px solid ;
+  padding: 10px;
+  height: 700px;
+}
+
+.invoice_pdf {
+  width: 100%;
+  height: 700px;
+}
+
 input[type=text], input[type=password], input[type=number] {
   width: 100%;
   padding: 12px 20px;

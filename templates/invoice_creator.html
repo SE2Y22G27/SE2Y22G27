@@ -40,12 +40,14 @@
           <input type="number" placeholder="ChargedTotalAmount" name="ChargedTotalAmount">
           <input type="number" placeholder="PayableAmount" name="PayableAmount">
 
+          
           <label><b>Invoice Line</b></label>
-          <input type="text" placeholder="InvoiceLineID" name="InvoiceLineID">
-          <input type="text" placeholder="InvoicedQuantity" name="InvoicedQuantity">
-          <input type="text" placeholder="LineExtensionAmount" name="LineExtensionAmount">
-          <input type="text" placeholder="PriceAmount" name="PriceAmount">
-
+          {% for i in range(1) %}
+            <input type="text" placeholder="InvoiceLineID" name="InvoiceLineID">
+            <input type="text" placeholder="InvoicedQuantity" name="InvoicedQuantity">
+            <input type="text" placeholder="LineExtensionAmount" name="LineExtensionAmount">
+            <input type="text" placeholder="PriceAmount" name="PriceAmount">
+          {% endfor %}
 
           <input type='text' value='{{ token }}' name='JWTToken' id='jwt'>
         </div>

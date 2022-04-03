@@ -103,7 +103,7 @@ def check_valid_chargeamount(data_amount):
     '''
         check if charge amount satisfies the condition
     '''
-    if data_amount < 0:
+    if int(data_amount) < 0:
         return True
 
     return False
@@ -112,7 +112,7 @@ def check_valid_priceamount(data_amount):
     '''
         check if the price is positive and return bool
     '''
-    if data_amount >= 0:
+    if int(data_amount) >= 0:
         return True
 
     return False

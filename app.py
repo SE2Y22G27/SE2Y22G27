@@ -58,6 +58,24 @@ def create_xml_route():
     #info = request.get_json()
     token = request.form['JWTToken']
     
+    # Create the invoice_line list of dictionaries. 
+    invoice_line = []
+    invoice_ids = request.form.getlist('id_field[]')
+    invoice_quantity = request.form.getlist('quantity_field[]')
+    invoice_amount = request.form.getlist('amount_field[]')
+    invoice_price = request.form.getlist('price_field[]')
+    
+    for i in range(len(invoice_ids)):
+        invoice_line_dict = {
+            'ID' : invoice_ids[i],
+            'InvoiceQuantity' : invoice_quantity[i],
+            'LineExtensionAmount' : invoice_amount[i],
+            'Price' : {
+                'PriceAmount' : invoice_price[i],
+                    }
+        }
+        invoice_line.append(invoice_line_dict)
+    
     invoice_dict = { 'InvoiceTypeCode' : 380,
         'AllowanceCharge' : {
             'ChargeIndicator' : request.form['ChargeIndicator'],
@@ -76,18 +94,8 @@ def create_xml_route():
                                 'PayableAmount' : request.form['PayableAmount'],
                                 },
 
-        'InvoiceLine' : [
-            {
-                'ID' : request.form['InvoiceLineID'],
-                'InvoiceQuantity' : request.form['InvoicedQuantity'],
-                'LineExtensionAmount' : request.form['LineExtensionAmount'],
-                'Price' : {
-                    'PriceAmount' : request.form['PriceAmount'],
-                        }
-            }
-                        ],
+        'InvoiceLine' : invoice_line,
                     }
-    
     
     data_read_v1(token, invoice_dict)
     create_invoice_v1(token)

@@ -2,10 +2,10 @@
     all the import required to read the data dictionary that stores
     the user invoice information and decode the token
 '''
+
+from datetime import datetime
 import jwt
 from source.config import secret
-from datetime import datetime
-import time
 def check_valid_data(data):
     '''
         checks whether the keys are all assigned with a value if not then the user
@@ -19,36 +19,36 @@ def check_valid_data(data):
                    by the user is sufficent to generate an invoice
 
     '''
+    valid = True
     for info in data.values():
         if info == {}:
-            return False
+            valid = False
 
     # check if the invoiceTypeCode are correct
     if not check_valid_typecode(data['InvoiceTypeCode']):
-        return False
+        valid = False
 
     # check if the allowance are correct
     if not check_valid_taxtotal(data['TaxTotal']):
-        return False
-
+        valid = False
     # check if the legalmonetary total are correct
     if not check_valid_legalmonetarytotal(data['LegalMonetaryTotal']):
-        return False
+        valid = False
 
     # check if all the invoiceLine are correct
     if not check_valid_invoiceline(data['InvoiceLine']):
-        return False
+        valid = False
 
     if not check_valid_issuedate(data['IssueDate']):
-        return False
+        valid = False
 
     if not check_valid_supplier(data['AccountingSupplierParty']['Party']):
-        return False
+        valid = False
 
     if not check_valid_customer(data['AccountingCustomerParty']['Party']):
-        return False
+        valid = False
 
-    return True
+    return valid
 
 def check_valid_typecode(data_invoicetypecode):
     '''
@@ -96,7 +96,7 @@ def check_valid_payment_term(data_payment_term):
 
     if data_payment_term['Note'] == {}:
         return False
-    
+
     return True
 
 
@@ -117,7 +117,7 @@ def check_valid_taxtotal(data_taxtotal):
             return False
 
     if  data_taxtotal['TaxSubtotal']['TaxCategory']['TaxScheme']['ID'] == {}:
-            return False
+        return False
 
     return True
 
@@ -141,60 +141,70 @@ def check_valid_invoiceline(data_invoiceline):
     '''
         check if all the fields are not empty
     '''
+    valid = True
     for  invoice_item in data_invoiceline:
+        if not valid:
+            break
         for value in invoice_item.values():
             if value == {}:
-                return False
+                valid = False
+                break
 
         for value in invoice_item['Item'].values():
 
             if value == {}:
-                return False
+                valid = False
+                break
 
         for value in invoice_item['Item']['ClassifiedTaxCategory'].values():
 
             if value == {}:
-                return False
+                valid = False
+                break
 
         if  invoice_item['Item']['ClassifiedTaxCategory']['TaxScheme']['ID'] == {}:
-            return False
+            valid = False
+            break
 
         if invoice_item['Price']['PriceAmount'] == {}:
-            return False
-            
+            valid = False
+            break
+
         if invoice_item['Price']['BaseQuantity'] == {}:
-            return False
+            valid = False
+            break
 
         check_valid_priceamount(invoice_item['Price']['PriceAmount'])
         check_valid_priceamount(invoice_item['Price']['BaseQuantity'])
 
-    return True
+    return valid
 
 def check_valid_supplier(data_supplier):
     '''
         check if all the fields are not empty
     '''
+    valid = True
     for info in data_supplier:
         if info == {}:
-            return False
+            valid = False
 
-    
+
     if  data_supplier['PartyIdentification']['ID'] == {}:
-            return False
+        valid = False
 
     if  data_supplier['PartyName']['Name'] == {}:
-            return False
+        valid = False
     for supplier_info in data_supplier['PostalAddress']:
-            if  supplier_info == {}:
-                return False
+        if  supplier_info == {}:
+            valid = False
     if data_supplier['PostalAddress']['Country']['IdentificationCode'] == {}:
-            return False
+        valid = False
     if  data_supplier['PartyLegalEntity']['RegistrationName'] == {}:
-            return False
+        valid = False
     if  data_supplier['PartyLegalEntity']['CompanyID'] == {}:
-            return False
+        valid = False
 
-    return True
+    return valid
 
 def check_valid_customer(data_customer):
     '''
@@ -206,14 +216,14 @@ def check_valid_customer(data_customer):
 
 
     if  data_customer['PartyName']['Name'] == {}:
-            return False
+        return False
     for supplier_info in data_customer['PostalAddress']:
-            if  supplier_info == {}:
-                return False
+        if  supplier_info == {}:
+            return False
     if data_customer['PostalAddress']['Country']['IdentificationCode'] == {}:
-            return False
+        return False
     if  data_customer['PartyLegalEntity']['RegistrationName'] == {}:
-            return False
+        return False
 
     return True
 

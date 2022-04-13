@@ -17,12 +17,12 @@ def test_valid_input():
 
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
 
-    sample_data = { 
+    sample_data = {
         'InvoiceID' :'EBWASP1002',
         'InvoiceTypeCode' : 380,
         'IssueDate' : '2022-02-07',
         'AccountingSupplierParty' : {
-            'Party' : 
+            'Party' :
                     {
                         'PartyIdentification': {'ID': 80647710156},
                         'PartyName' : {'Name': 'Ebusiness Software Services Pty Ltd'},
@@ -41,7 +41,7 @@ def test_valid_input():
 
                                      },
         'AccountingCustomerParty' : {
-            'Party' : 
+            'Party' :
                     {
                         'PartyName' : {'Name': 'Awolako Enterprises Pty Ltd'},
                         'PostalAddress' : {
@@ -70,17 +70,17 @@ def test_valid_input():
             'TaxSubtotal' : {
                 'TaxableAmount' : 100.00,
                 'TaxAmount' : 10.00,
-                'TaxCategory' : {  
+                'TaxCategory' : {
                      'ID' : 'S',
                     'Percent' : 10.0,
-                    'TaxScheme' : { 
+                    'TaxScheme' : {
                         'ID' : 'GST'
                                 }
                                 },
                     },
 
                     },
-            
+
 
         'LegalMonetaryTotal' : {'LineExtensionAmount' : 100.00,
                                 'TaxExclusiveAmount' : 100.00,

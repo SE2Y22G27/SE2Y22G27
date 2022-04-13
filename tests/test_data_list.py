@@ -15,40 +15,93 @@ def test_valid_invoice():
     clear()
     register_info = register("testA@gmail.com", "1234567890", "Person", "AA")
 
-    sample_dict = { 'InvoiceTypeCode' : 380,
-        'AllowanceCharge' : {
-            'ChargeIndicator' : 'true',
-            'AllowanceChargeReason' : 'Insurance',
-            'Amount' : -25,
-            'TaxCategory' : {   'ID' : 'S',
-                'Percent' : 25.0,
-                'TaxScheme' : { 'ID' : 'VAT'},
-                            },
+    sample_dict = { 
+        'InvoiceTypeCode' : 380,
+        'IssueDate' : '2022-02-07',
+        'AccountingSupplierParty' : {
+            'Party' : 
+                    {
+                        'PartyIdentification': {'ID': 80647710156},
+                        'PartyName' : {'Name': 'Ebusiness Software Services Pty Ltd'},
+                        'PostalAddress' : {
+                                'StreetName' : '100 Business St',
+                                'CityName': 'Dulwich Hill',
+                                'PostalZone' : 2203,
+                                'Country' : {'IdentificationCode': 'AU'}
+                        },
+                        'PartyLegalEntity' : {
+                            'RegistrationName' : 'Ebusiness Software Services Pty Ltd',
+                            'CompanyID' : 80647710156,
+                        }
+                    }
+
+                                     },
+        'AccountingCustomerParty' : {
+            'Party' : 
+                    {
+                        'PartyName' : {'Name': 'Awolako Enterprises Pty Ltd'},
+                        'PostalAddress' : {
+                                'StreetName' : 'Suite 123 Level 45',
+                                'AdditionalStreetName' : '999 The Crescent',
+                                'CityName': 'Homebush West',
+                                'PostalZone' : 2140,
+                                'Country' : {'IdentificationCode': 'AU'}
+                        },
+                        'PartyLegalEntity' : {
+                            'RegistrationName' : 'Awolako Enterprises Pty Ltd',
+                        }
+                    }
+
+                                     },
+        'PaymentMeans': {
+            'PaymentMeansCode' : 1,
+            'PaymentID' : 'EBWASP1002',
+                        },
+        'PaymentTerms': {
+            'Note' : 'As agreed'
+                        },
+
+        'TaxTotal' : {
+            'TaxAmount' : 10.00,
+            'TaxSubtotal' : {
+                'TaxableAmount' : 100.00,
+                'TaxAmount' : 10.00,
+                'TaxCategory' : {  
+                     'ID' : 'S',
+                'Percent' : 10.0,
+                'TaxScheme' : { 
+                    'ID' : 'GST'
+                             }
+                                },
                     },
 
-        'LegalMonetaryTotal' : {'LineExtensionAmount' : -1300,
-                                'TaxExclusiveAmount' : -1000,
-                                'TaxInclusiveAmount' : -1656.25,
-                                'ChargedTotalAmount' : -25,
-                                'PayableAmount' : -1656.25,
+                    },
+            
+
+        'LegalMonetaryTotal' : {'LineExtensionAmount' : 100.00,
+                                'TaxExclusiveAmount' : 100.00,
+                                'TaxInclusiveAmount' : 110.00,
+                                'PayableRoundingAmount' : 0.00,
+                                'PayableAmount' : 110.00,
                                 },
 
         'InvoiceLine' : [
             {
                 'ID' : 1,
-                'InvoiceQuantity' : -7,
-                'LineExtensionAmount' : -2800,
+                'InvoiceQuantity' : 500.0,
+                'LineExtensionAmount' : 100.00,
+                'Item' : {
+                    'Name' : 'pencils',
+                    'ClassifiedTaxCategory': {
+                        'ID':'S',
+                        'Percent': 10.0,
+                        'TaxScheme': {'ID' : 'GST'},
+                    },
+                },
                 'Price' : {
-                    'PriceAmount' : 400,
+                    'PriceAmount' : 0.20,
+                    'BaseQuantity' : 1.0,
                         },
-            },
-            {
-                'ID' : 2,
-                'InvoiceQuantity' : 3,
-                'LineExtensionAmount' : 1500,
-                'Price' : {
-                    'PriceAmount' : 500,
-                            },
             },
                         ],
                     }

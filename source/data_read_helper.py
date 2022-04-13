@@ -2,6 +2,8 @@
     all the import required to read the data dictionary that stores
     the user invoice information and decode the token
 '''
+
+from datetime import datetime
 import jwt
 from source.config import secret
 def check_valid_data(data):
@@ -17,23 +19,36 @@ def check_valid_data(data):
                    by the user is sufficent to generate an invoice
 
     '''
+    valid = True
+    for info in data.values():
+        if info == {}:
+            valid = False
+
     # check if the invoiceTypeCode are correct
     if not check_valid_typecode(data['InvoiceTypeCode']):
-        return False
+        valid = False
 
     # check if the allowance are correct
-    if not check_valid_allowancecharge(data['AllowanceCharge']):
-        return False
-
+    if not check_valid_taxtotal(data['TaxTotal']):
+        valid = False
     # check if the legalmonetary total are correct
     if not check_valid_legalmonetarytotal(data['LegalMonetaryTotal']):
-        return False
+        valid = False
 
     # check if all the invoiceLine are correct
     if not check_valid_invoiceline(data['InvoiceLine']):
-        return False
+        valid = False
 
-    return True
+    if not check_valid_issuedate(data['IssueDate']):
+        valid = False
+
+    if not check_valid_supplier(data['AccountingSupplierParty']['Party']):
+        valid = False
+
+    if not check_valid_customer(data['AccountingCustomerParty']['Party']):
+        valid = False
+
+    return valid
 
 def check_valid_typecode(data_invoicetypecode):
     '''
@@ -48,22 +63,61 @@ def check_valid_typecode(data_invoicetypecode):
 
     return True
 
-def check_valid_allowancecharge(data_allowancecharge):
+def check_valid_issuedate(data_issuedate):
+    '''
+        check if the issue date is valid
+    '''
+    if data_issuedate == {}:
+        return False
+
+    if data_issuedate > datetime.now().strftime("%Y-%m-%d"):
+        return False
+
+    return True
+
+def check_valid_paymentmean(data_paymentmean):
+    '''
+        check if the payment mean is valid
+    '''
+    if data_paymentmean == {}:
+        return False
+
+    for info in data_paymentmean:
+        if info.values() == {}:
+            return False
+    return True
+
+def check_valid_payment_term(data_payment_term):
+    '''
+        check if the payment terms is valid
+    '''
+    if data_payment_term == {}:
+        return False
+
+    if data_payment_term['Note'] == {}:
+        return False
+
+    return True
+
+
+def check_valid_taxtotal(data_taxtotal):
     '''
         check if all the allowance chage fields are not empty
     '''
-    for  value in data_allowancecharge.values():
+    for  value in data_taxtotal.values():
         if value == {}:
             return False
 
-    for value in data_allowancecharge['TaxCategory'].values():
+    for value in data_taxtotal['TaxSubtotal'].values():
         if value == {}:
             return False
 
-    if data_allowancecharge['TaxCategory']['ID'] == {}:
+    for value in data_taxtotal['TaxSubtotal']['TaxCategory'].values():
+        if value == {}:
+            return False
+
+    if  data_taxtotal['TaxSubtotal']['TaxCategory']['TaxScheme']['ID'] == {}:
         return False
-
-    check_valid_chargeamount(data_allowancecharge['Amount'])
 
     return True
 
@@ -78,7 +132,7 @@ def check_valid_legalmonetarytotal(data_legalmonetarytotal):
     check_valid_chargeamount(data_legalmonetarytotal['LineExtensionAmount'])
     check_valid_chargeamount(data_legalmonetarytotal['TaxInclusiveAmount'])
     check_valid_chargeamount(data_legalmonetarytotal['TaxExclusiveAmount'])
-    check_valid_chargeamount(data_legalmonetarytotal['ChargedTotalAmount'])
+    check_valid_chargeamount(data_legalmonetarytotal['PayableRoundingAmount'])
     check_valid_chargeamount(data_legalmonetarytotal['PayableAmount'])
 
     return True
@@ -87,15 +141,89 @@ def check_valid_invoiceline(data_invoiceline):
     '''
         check if all the fields are not empty
     '''
+    valid = True
     for  invoice_item in data_invoiceline:
+        if not valid:
+            break
         for value in invoice_item.values():
             if value == {}:
-                return False
+                valid = False
+                break
+
+        for value in invoice_item['Item'].values():
+
+            if value == {}:
+                valid = False
+                break
+
+        for value in invoice_item['Item']['ClassifiedTaxCategory'].values():
+
+            if value == {}:
+                valid = False
+                break
+
+        if  invoice_item['Item']['ClassifiedTaxCategory']['TaxScheme']['ID'] == {}:
+            valid = False
+            break
 
         if invoice_item['Price']['PriceAmount'] == {}:
-            return False
+            valid = False
+            break
+
+        if invoice_item['Price']['BaseQuantity'] == {}:
+            valid = False
+            break
 
         check_valid_priceamount(invoice_item['Price']['PriceAmount'])
+        check_valid_priceamount(invoice_item['Price']['BaseQuantity'])
+
+    return valid
+
+def check_valid_supplier(data_supplier):
+    '''
+        check if all the fields are not empty
+    '''
+    valid = True
+    for info in data_supplier:
+        if info == {}:
+            valid = False
+
+
+    if  data_supplier['PartyIdentification']['ID'] == {}:
+        valid = False
+
+    if  data_supplier['PartyName']['Name'] == {}:
+        valid = False
+    for supplier_info in data_supplier['PostalAddress']:
+        if  supplier_info == {}:
+            valid = False
+    if data_supplier['PostalAddress']['Country']['IdentificationCode'] == {}:
+        valid = False
+    if  data_supplier['PartyLegalEntity']['RegistrationName'] == {}:
+        valid = False
+    if  data_supplier['PartyLegalEntity']['CompanyID'] == {}:
+        valid = False
+
+    return valid
+
+def check_valid_customer(data_customer):
+    '''
+        check if all the fields are not empty
+    '''
+    for info in data_customer:
+        if info == {}:
+            return False
+
+
+    if  data_customer['PartyName']['Name'] == {}:
+        return False
+    for supplier_info in data_customer['PostalAddress']:
+        if  supplier_info == {}:
+            return False
+    if data_customer['PostalAddress']['Country']['IdentificationCode'] == {}:
+        return False
+    if  data_customer['PartyLegalEntity']['RegistrationName'] == {}:
+        return False
 
     return True
 
@@ -103,7 +231,7 @@ def check_valid_chargeamount(data_amount):
     '''
         check if charge amount satisfies the condition
     '''
-    if int(data_amount) < 0:
+    if int(data_amount) >= 0:
         return True
 
     return False

@@ -70,6 +70,13 @@ def user_register_v1():
         'token': return_register['token'],  
     })
 
+@app.route("/user/logout/v1", methods=['POST'])
+def user_logout_v1():
+    data = request.get_json()
+    check_valid_token(data['token'])
+    logout(data['token'])
+    return {}
+    
 @app.route("/invoice/create/v1", methods = ['POST'])
 def create_xml_route_v1():
     data = request.get_json()
@@ -247,30 +254,24 @@ def create_xml_route():
 @app.route("/invoice/send/v1", methods = ['POST'])
 def send_invoice():
     email = request.form['email']
-    
+    token = request.form['JWTToken']
     sending_endpoint = "https://www.seng2021g23.tk/api/v1/send_invoice"
     sending_api_endpoint = "https://www.seng2021g23.tk/api/v1/sender"
-    token = request.form['Token']
-    user_code = ""
+    
+    user_code = "" 
     user_id = decode_token(token)
-    for user in data['users']:
-        if user['user_id'] == user_id:
-            user_code = user['first_name'] + user['last_name'] + f"{user_id}"
-            break
-    data = {"username":user_code}
+    username = "TEAM_CUPCAKE"
+    data = {"username":username}
     response = requests.post(url= sending_api_endpoint, data= data)
     api_key = response.text
     for user in data['users']:
         if user["user_id"] == user_id:
             if response.status_code == 409:
-                api_key = user['api_key']
+                api_key = "K7jvORMPMHbo7ei4eQp1XvC-l6wot4lxqV_QAlo9Ps9ehjf7uXABPTmS8kmZaFC5CxlsIpOI-rAGob2jEfQG0w"
                 break
-            else:
-                user['api_key'] = api_key
-                break
-    header={"api_key":api_key}
+    header={"Authorization":"Bearer "+api_key}
     files = {'invoice': open(f"{user_id}"+"_invoice.xml", 'rb')}
-    data = {'recipients': {"type": "email", "to" : email}}
+    data = {'recipients': [{"type": "email", "to" : email}]}
     response = requests.post(url= sending_endpoint, headers=header,files= files, data= data)
     data = response.json()
     if data['status'] == "success":

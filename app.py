@@ -18,16 +18,16 @@ app = Flask(__name__)
 def home_page():
     return render_template('index.html')
 
-@app.route("/register")
+@app.route("/register_v2")
 def register_page():
     return render_template('register.html')
 
-@app.route("/create/invoice", methods=['POST'])
+@app.route("/create/invoice_v2", methods=['POST'])
 def create_invoice_page():
     return render_template('invoice_creator.html', token=request.form['JWTToken'])
 
 #''' AUTH FUNCTIONS '''
-@app.route("/user/register", methods=['POST'])
+@app.route("/user/register/v2", methods=['POST'])
 def user_register():
     email = request.form['email']
     password = request.form['password']
@@ -41,7 +41,9 @@ def user_register():
     })
     return render_template('invoice_creator.html', token=return_register['token'])
 
-@app.route("/user/login", methods=['POST'])
+
+
+@app.route("/user/login/v2", methods=['POST'])
 def user_login():
     email = request.form['email']
     password = request.form['password']
@@ -55,12 +57,58 @@ def user_login():
     return render_template('invoice_creator.html', token=return_login['token'])
     
 #''' CONVERT TO XML FUNCTION '''
+@app.route("/user/register/v1", methods=['POST'])
+def user_register_v1():
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+    first_name = data['first_name']
+    last_name = data['last_name']
+    return_register = register(email, password, first_name, last_name)
+    return dumps({
+        'auth_user_id': return_register['auth_user_id'],
+        'token': return_register['token'],  
+    })
+
 @app.route("/invoice/create/v1", methods = ['POST'])
+def create_xml_route_v1():
+    data = request.get_json()
+    data_read_v1(data['token'],data['invoice'])
+    create_invoice_v1(data['token'])
+    return {}
+
+@app.route("/invoice/get/v1", methods = ['GET'])
+def get_xml_route_v1():
+    token = request.args.get('token')
+    data_info = data.get_data()
+    check_valid_token(token)
+    user_id = decode_token(token)
+    xml = ""
+    for user in data_info['users']:
+        if user["user_id"] == user_id:
+            xml = user['xmlroot']
+
+    return Response(xml, mimetype = 'txt/xml')
+
+@app.route("/user/login/v1", methods=['POST'])
+def user_login_v1():
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+    return_login = login(email, password)
+    data = dumps({
+        'auth_user_id': return_login['auth_user_id'],
+        'token': return_login['token']
+    })
+    return {}
+
+
+@app.route("/invoice/create/v2", methods = ['POST'])
 def create_xml_route():
     #info = request.get_json()
     token = request.form['JWTToken']
     
-
     invoice_dict = { 
         'InvoiceTypeCode' : 380,
         'InvoiceID' : request.form['InvoiceID'],
@@ -163,7 +211,6 @@ def create_xml_route():
             }
         invoice_dict['InvoiceLine'].append(invoice_line_dict)
         digit = digit + 1
-
     data_read_v1(token, invoice_dict)
     create_invoice_v1(token)
     
@@ -199,7 +246,35 @@ def create_xml_route():
 
 @app.route("/invoice/send/v1", methods = ['POST'])
 def send_invoice():
+    email = request.form['email']
     
+    sending_endpoint = "https://www.seng2021g23.tk/api/v1/send_invoice"
+    sending_api_endpoint = "https://www.seng2021g23.tk/api/v1/sender"
+    token = request.form['Token']
+    user_code = ""
+    user_id = decode_token(token)
+    for user in data['users']:
+        if user['user_id'] == user_id:
+            user_code = user['first_name'] + user['last_name'] + f"{user_id}"
+            break
+    data = {"username":user_code}
+    response = requests.post(url= sending_api_endpoint, data= data)
+    api_key = response.text
+    for user in data['users']:
+        if user["user_id"] == user_id:
+            if response.status_code == 409:
+                api_key = user['api_key']
+                break
+            else:
+                user['api_key'] = api_key
+                break
+    header={"api_key":api_key}
+    files = {'invoice': open(f"{user_id}"+"_invoice.xml", 'rb')}
+    data = {'recipients': {"type": "email", "to" : email}}
+    response = requests.post(url= sending_endpoint, headers=header,files= files, data= data)
+    data = response.json()
+    if data['status'] == "success":
+        print("successful")
     return render_template('success.html', email=request.form['email'], token=request.form['JWTToken'])
     
 

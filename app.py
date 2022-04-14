@@ -271,7 +271,7 @@ def send_invoice():
                 break
     header={"Authorization":"Bearer "+api_key}
     files = {'invoice': open(f"{user_id}"+"_invoice.xml", 'rb')}
-    data = {'recipients': [{"type": "email", "to" : email}]}
+    data = {'recipients': [{"type": "email", "to" : request.form["email"]}]}
     response = requests.post(url= sending_endpoint, headers=header,files= files, data= data)
     data = response.json()
     if data['status'] == "success":

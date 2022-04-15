@@ -60,13 +60,13 @@ def create_xml_route():
     #info = request.get_json()
     token = request.form['JWTToken']
     
-    
-
 
     invoice_dict = { 
         'InvoiceTypeCode' : 380,
         'InvoiceID' : request.form['InvoiceID'],
         'IssueDate' : request.form['IssueDate'],
+        'BuyerReference' : request.form['InvoiceID'],
+        'AdditionalDocumentReference' : request.form['InvoiceID'],
         'AccountingSupplierParty' : {
             'Party' : 
                     {
@@ -165,7 +165,6 @@ def create_xml_route():
         if response.status_code == 200:
             f = open(f"{user_id}"+"render.html", "w")
             f.write(response.text)
-        print(response.text)
 
     return render_template('display_invoice.html', token=token)
     

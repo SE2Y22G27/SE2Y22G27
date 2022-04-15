@@ -1,4 +1,6 @@
+from importlib.metadata import files
 import sys
+import requests
 from json import dumps, loads
 from flask import Flask, request, Response, render_template
 from source.data_read import data_read_v1
@@ -58,39 +60,76 @@ def create_xml_route():
     #info = request.get_json()
     token = request.form['JWTToken']
     
-    # Create the invoice_line list of dictionaries. 
-    invoice_line = []
-    invoice_ids = request.form.getlist('id_field[]')
-    invoice_quantity = request.form.getlist('quantity_field[]')
-    invoice_amount = request.form.getlist('amount_field[]')
-    invoice_price = request.form.getlist('price_field[]')
     
-    for i in range(len(invoice_ids)):
-        invoice_line_dict = {
-            'ID' : invoice_ids[i],
-            'InvoiceQuantity' : invoice_quantity[i],
-            'LineExtensionAmount' : invoice_amount[i],
-            'Price' : {
-                'PriceAmount' : invoice_price[i],
+
+
+    invoice_dict = { 
+        'InvoiceTypeCode' : 380,
+        'InvoiceID' : request.form['InvoiceID'],
+        'IssueDate' : request.form['IssueDate'],
+        'AccountingSupplierParty' : {
+            'Party' : 
+                    {
+                        'PartyIdentification': {'ID':  request.form['RegistrationID']},
+                        'PartyName' : {'Name':  request.form['Name']},
+                        'PostalAddress' : {
+                                'StreetName' :  request.form['Street'],
+                                'CityName':  request.form['City'],
+                                'PostalZone' :  request.form['PostalZone'],
+                                'Country' : {'IdentificationCode': 'AU'}
+                        },
+                        'PartyLegalEntity' : {
+                            'RegistrationName' :  request.form['Name'],
+                            'CompanyID' :  request.form['RegistrationID'],
+                        }
                     }
-        }
-        invoice_line.append(invoice_line_dict)
-    
-    invoice_dict = { 'InvoiceTypeCode' : 380,
-        'AllowanceCharge' : {
-            'ChargeIndicator' : request.form['ChargeIndicator'],
-            'AllowanceChargeReason' : request.form['AllowanceChargeReason'],
-            'Amount' : request.form['Amount'],
-            'TaxCategory' : {   'ID' : request.form['TaxCategoryID'],
-                'Percent' : request.form['Percent'],
-                'TaxScheme' : { 'ID' : request.form['TaxSchemeID']},
-                            },
+
+                                     },
+        'AccountingCustomerParty' : {
+            'Party' : 
+                    {
+                        'PartyName' : {'Name':  request.form['Name1']},
+                        'PostalAddress' : {
+                                'StreetName' :  request.form['Street1'],
+                                'CityName':  request.form['CityName'],
+                                'PostalZone' : request.form['PostalZone'],
+                                'Country' : {'IdentificationCode': 'AU'}
+                        },
+                        'PartyLegalEntity' : {
+                            'RegistrationName' :  request.form['Name1'],
+                        }
+                    }
+
+                                     },
+        'PaymentMeans': {
+            'PaymentMeansCode' : 1,
+            'PaymentID' :  request.form['InvoiceID'],
+                        },
+        'PaymentTerms': {
+            'Note' : 'As agreed'
+                        },
+
+        'TaxTotal' : {
+            'TaxAmount' :  request.form['TaxAmount'],
+            'TaxSubtotal' : {
+                'TaxableAmount' :  request.form['TaxableAmount'],
+                'TaxAmount' :  request.form['SubTaxAmount'],
+                'TaxCategory' : {  
+                     'ID' :  request.form['TaxCategoryID'],
+                'Percent' :  request.form['TaxCategoryPercent'],
+                'TaxScheme' : { 
+                    'ID' :  request.form['TaxSchemeID']
+                             }
+                                },
                     },
 
-        'LegalMonetaryTotal' : {'LineExtensionAmount' : request.form['LineExtensionAmount'],
+                    },
+            
+
+        'LegalMonetaryTotal' : {'LineExtensionAmount' :  request.form['LineExtensionAmount'],
                                 'TaxExclusiveAmount' : request.form['TaxExclusiveAmount'],
                                 'TaxInclusiveAmount' : request.form['TaxInclusiveAmount'],
-                                'ChargedTotalAmount' : request.form['ChargedTotalAmount'],
+                                'PayableRoundingAmount' : request.form['PayableRoundingAmount'],
                                 'PayableAmount' : request.form['PayableAmount'],
                                 },
 
@@ -100,7 +139,36 @@ def create_xml_route():
     data_read_v1(token, invoice_dict)
     create_invoice_v1(token)
     
+    validation_endpoint = "http://invoicevalidation.services:8080/verify_invoice"
+    user_id = decode_token(token)
+    files = {'invoice': open(f"{user_id}"+"_invoice.xml",'rb')}
+    data_dict = {
+        'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJncm91cF9pZCI6NX0.GoDgfC3GzSjjOgKhntzyd37euX0ec-v5G4P-rKG7V3A',
+        'rules' : 3,
+        'output_type' : 'json'
+    }
+    response = requests.post(url = validation_endpoint, files= files, data = data_dict)
+    data = response.json()
+    
+    if response.status_code != 200:
+        print("server is out!!!")
+    if data['message']['valid'] == True:
+        rendering_endpoint = "https://www.invoicerendering.com/einvoices/v2"
+        param = {
+            'renderType' : "html",
+            'lang' : "en"
+        }
+        files = {
+            'xml' : open(f"{user_id}"+"_invoice.xml","rb")
+        }
+        response = requests.post(url= rendering_endpoint, params= param, files= files)
+        if response.status_code == 200:
+            f = open(f"{user_id}"+"render.html", "w")
+            f.write(response.text)
+        print(response.text)
+
     return render_template('display_invoice.html', token=token)
+    
 
 @app.route("/invoice/send/v1", methods = ['POST'])
 def send_invoice():

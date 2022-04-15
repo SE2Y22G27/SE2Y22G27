@@ -1,3 +1,5 @@
+import smtplib
+from email.message import EmailMessage
 from importlib.metadata import files
 import sys
 import requests
@@ -113,9 +115,7 @@ def user_login_v1():
 
 @app.route("/invoice/create/v2", methods = ['POST'])
 def create_xml_route():
-    #info = request.get_json()
     token = request.form['JWTToken']
-    
     invoice_dict = { 
         'InvoiceTypeCode' : 380,
         'InvoiceID' : request.form['InvoiceID'],
@@ -218,6 +218,8 @@ def create_xml_route():
             }
         invoice_dict['InvoiceLine'].append(invoice_line_dict)
         digit = digit + 1
+   
+
     data_read_v1(token, invoice_dict)
     create_invoice_v1(token)
     
@@ -226,15 +228,15 @@ def create_xml_route():
     files = {'invoice': open(f"{user_id}"+"_invoice.xml",'rb')}
     data_dict = {
         'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJncm91cF9pZCI6NX0.GoDgfC3GzSjjOgKhntzyd37euX0ec-v5G4P-rKG7V3A',
-        'rules' : 3,
+        'rules' : 2,
         'output_type' : 'json'
     }
     response = requests.post(url = validation_endpoint, files= files, data = data_dict)
-    data = response.json()
+    data_response = response.json()
     
     if response.status_code != 200:
         print("server is out!!!")
-    if data['message']['valid'] == True:
+    if data_response['message']['valid'] == True:
         rendering_endpoint = "https://www.invoicerendering.com/einvoices/v2"
         param = {
             'renderType' : "html",
@@ -247,35 +249,30 @@ def create_xml_route():
         if response.status_code == 200:
             f = open(f"{user_id}"+"render.html", "w")
             f.write(response.text)
+        else:
+            print("Something is wrong")
 
     return render_template('display_invoice.html', token=token)
     
 
 @app.route("/invoice/send/v1", methods = ['POST'])
 def send_invoice():
-    email = request.form['email']
     token = request.form['JWTToken']
-    sending_endpoint = "https://www.seng2021g23.tk/api/v1/send_invoice"
-    sending_api_endpoint = "https://www.seng2021g23.tk/api/v1/sender"
-    
-    user_code = "" 
     user_id = decode_token(token)
-    username = "TEAM_CUPCAKE"
-    data = {"username":username}
-    response = requests.post(url= sending_api_endpoint, data= data)
-    api_key = response.text
-    for user in data['users']:
-        if user["user_id"] == user_id:
-            if response.status_code == 409:
-                api_key = "K7jvORMPMHbo7ei4eQp1XvC-l6wot4lxqV_QAlo9Ps9ehjf7uXABPTmS8kmZaFC5CxlsIpOI-rAGob2jEfQG0w"
-                break
-    header={"Authorization":"Bearer "+api_key}
-    files = {'invoice': open(f"{user_id}"+"_invoice.xml", 'rb')}
-    data = {'recipients': [{"type": "email", "to" : request.form["email"]}]}
-    response = requests.post(url= sending_endpoint, headers=header,files= files, data= data)
-    data = response.json()
-    if data['status'] == "success":
-        print("successful")
+
+    msg = EmailMessage()
+    msg['Subject'] = 'Invoice Sending'
+    msg['To'] = request.form['email']
+    filename = f"{user_id}"+"_invoice.xml"
+    with open(filename, "rb") as myinvoice:
+        data=myinvoice.read()
+        msg.add_attachment(data, maintype="application",subtype="xml",filename=myinvoice.name)
+
+    server = smtplib.SMTP_SSL('smtp.gmail.com',465)
+    server.login("teamcupcake2022@gmail.com","cake731816289")
+    server.send_message(msg)
+    server.quit()
+
     return render_template('success.html', email=request.form['email'], token=request.form['JWTToken'])
     
 

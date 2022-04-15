@@ -97,7 +97,7 @@ nav {
 }
 
 input[type=text], input[type=password], input[type=number] {
-  width: 100%;
+  width: 90%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;

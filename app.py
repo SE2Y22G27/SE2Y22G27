@@ -60,6 +60,41 @@ def create_xml_route():
     #info = request.get_json()
     token = request.form['JWTToken']
     
+    # Create the invoice_line list of dictionaries. 
+    invoice_lines = []
+    invoice_ids = request.form.getlist('id_field[]')
+    invoice_quantity = request.form.getlist('quantity_field[]')
+    invoice_amount = request.form.getlist('amount_field[]')
+    
+    invoice_item_name = request.form.getlist('item_name_field[]')
+    invoice_tax_id = request.form.getlist('tax_id_field[]')
+    invoice_tax_percent = request.form.getlist('percent_field[]')
+    invoice_taxscheme_id = request.form.getlist('taxscheme_id_field[]')
+    
+    invoice_base_quantity = request.form.getlist('base_quantity_field[]')
+    invoice_price = request.form.getlist('price_field[]')
+    
+    for i in range(len(invoice_ids)):
+        invoice_line_dict = {
+            'ID' : invoice_ids[i],
+            'InvoicedQuantity' : invoice_quantity[i],
+            'LineExtensionAmount' : invoice_amount[i],
+            'Item' : {
+                'Name': invoice_item_name[i],
+                'ClassifiedTaxCategory': {
+                    'ID': invoice_tax_id[i],
+                    'Percent': invoice_tax_percent[i],
+                    'TaxScheme': {
+                            'ID': invoice_taxscheme_id[i],
+                        },
+                },
+            },
+            'Price' : {
+                'PriceAmount' : invoice_price[i],
+                'BaseQuantity': invoice_base_quantity[i],
+                    }
+        }
+        invoice_lines.append(invoice_line_dict)
 
     invoice_dict = { 
         'InvoiceTypeCode' : 380,
@@ -91,8 +126,8 @@ def create_xml_route():
                         'PartyName' : {'Name':  request.form['Name1']},
                         'PostalAddress' : {
                                 'StreetName' :  request.form['Street1'],
-                                'CityName':  request.form['CityName'],
-                                'PostalZone' : request.form['PostalZone'],
+                                'CityName':  request.form['City1'],
+                                'PostalZone' : request.form['PostalZone1'],
                                 'Country' : {'IdentificationCode': 'AU'}
                         },
                         'PartyLegalEntity' : {
@@ -133,38 +168,43 @@ def create_xml_route():
                                 'PayableAmount' : request.form['PayableAmount'],
                                 },
 
-        'InvoiceLine' : invoice_line,
+        'InvoiceLine' : invoice_lines,
                     }
     
+    if 'AdditionalStreet' in request.form:
+        invoice_dict['AccountingSupplierParty']['Party']['PostalAddress']['AdditionalStreetName'] = request.form["AdditionalStreet"]
+    if 'AdditionalStreet1' in request.form:
+        invoice_dict['AccountingCustomerParty']['Party']['PostalAddress']['AdditionalStreetName'] = request.form["AdditionalStreet1"]
+
     data_read_v1(token, invoice_dict)
     create_invoice_v1(token)
     
-    validation_endpoint = "http://invoicevalidation.services:8080/verify_invoice"
-    user_id = decode_token(token)
-    files = {'invoice': open(f"{user_id}"+"_invoice.xml",'rb')}
-    data_dict = {
-        'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJncm91cF9pZCI6NX0.GoDgfC3GzSjjOgKhntzyd37euX0ec-v5G4P-rKG7V3A',
-        'rules' : 3,
-        'output_type' : 'json'
-    }
-    response = requests.post(url = validation_endpoint, files= files, data = data_dict)
-    data = response.json()
+    # validation_endpoint = "http://invoicevalidation.services:8080/verify_invoice"
+    # user_id = decode_token(token)
+    # files = {'invoice': open(f"{user_id}"+"_invoice.xml",'rb')}
+    # data_dict = {
+    #     'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJncm91cF9pZCI6NX0.GoDgfC3GzSjjOgKhntzyd37euX0ec-v5G4P-rKG7V3A',
+    #     'rules' : 3,
+    #     'output_type' : 'json'
+    # }
+    # response = requests.post(url = validation_endpoint, files= files, data = data_dict)
+    # data = response.json()
     
-    if response.status_code != 200:
-        print("server is out!!!")
-    if data['message']['valid'] == True:
-        rendering_endpoint = "https://www.invoicerendering.com/einvoices/v2"
-        param = {
-            'renderType' : "html",
-            'lang' : "en"
-        }
-        files = {
-            'xml' : open(f"{user_id}"+"_invoice.xml","rb")
-        }
-        response = requests.post(url= rendering_endpoint, params= param, files= files)
-        if response.status_code == 200:
-            f = open(f"{user_id}"+"render.html", "w")
-            f.write(response.text)
+    # if response.status_code != 200:
+    #     print("server is out!!!")
+    # if data['message']['valid'] == True:
+    #     rendering_endpoint = "https://www.invoicerendering.com/einvoices/v2"
+    #     param = {
+    #         'renderType' : "html",
+    #         'lang' : "en"
+    #     }
+    #     files = {
+    #         'xml' : open(f"{user_id}"+"_invoice.xml","rb")
+    #     }
+    #     response = requests.post(url= rendering_endpoint, params= param, files= files)
+    #     if response.status_code == 200:
+    #         f = open(f"{user_id}"+"render.html", "w")
+    #         f.write(response.text)
 
     return render_template('display_invoice.html', token=token)
     

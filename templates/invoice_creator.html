@@ -4,54 +4,155 @@
     <meta charset="utf-8">
     <title>API Create Invoice</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   </head>
 
   <body>
     <header>
-      <h1>API Create Invoice</h1>
+      <nav>
+        <div class="nav-wrapper">
+          <h1>API Create Invoice</h1>
+          <a href="{{ url_for('home_page') }}"><img src="" alt="Cupcake Logo"></a>
+          <a href="{{ url_for('home_page') }}">About</a>
+          <a href="{{ url_for('home_page') }}">Join</a>
+          <a href="{{ url_for('home_page') }}">Account</a>
+          <a href="{{ url_for('home_page') }}">Logout</a>
+        </div>
+      </nav>
     </header>
 
-    <h2>Create Invoice</h2>
+    <div class="container">
+      <h2 class="post-title">Create Invoice</h2>
+      <hr>
+      <form class="Invoice" action="{{ url_for('create_xml_route') }}" method="post">
+        <!-- Register Section -->
+        <div type='container'>
+          <div type='invoice_creator'>
+            <div>
+              <br><label><b>Invoice</b></label><br>
+              <input type="text" placeholder="InvoiceID" name="InvoiceID" required/>
+              <input type="text" placeholder="IssueDate" name="IssueDate" required/>
+              <input type="text" placeholder="RegistrationID" name="RegistrationID" required/>
+            </div>
 
-    <form class="Invoice" action="{{ url_for('create_xml_route') }}" method="post">
-      <!-- Register Section -->
-      <div type='container'>
-        <div type='invoice_creator'>
-          <label><b>Allowance Charge</b></label>
-          <input type="text" placeholder="ChargeIndicator" name="ChargeIndicator">
-          <input type="text" placeholder="AllowanceChargeReason" name="AllowanceChargeReason">
-          <input type="number" placeholder="Amount" name="Amount">
+            <table>
+              <tr>
+                <td>
+                  <br><label><b>Sender</b></label><br>
+                  <input type="text" placeholder="Name" name="Name" required/>
+                  <input type="text" placeholder="Street" name="Street" required/>
+                  <input type="text" placeholder="AdditionalStreet" name="AdditionalStreet"/>
+                  <input type="text" placeholder="City" name="City" required/>
+                  <input type="text" placeholder="PostalZone" name="PostalZone" required/>
+                </td>
+                <td>
+                  <br><label><b>Customer</b></label><br>
+                  <input type="text" placeholder="Name" name="Name1" required/>
+                  <input type="text" placeholder="Street" name="Street1" required/>
+                  <input type="text" placeholder="AdditionalStreet" name="AdditionalStreet1"/>
+                  <input type="text" placeholder="City" name="City1" required/>
+                  <input type="text" placeholder="PostalZone" name="PostalZone1" required/>
+                </td>
+              </tr>
+            </table>
+            
+            <div>
+              <br><label><b>Tax Amount</b></label><br>
+              <input type="text" placeholder="TaxAmount" name="TaxAmount" required/>
+              <input type="text" placeholder="TaxableAmount" name="TaxableAmount" required/>
+              <input type="text" placeholder="SubTaxAmount" name="SubTaxAmount" required/>
+              <input type="text" placeholder="TaxCategoryID" name="TaxCategoryID" required/>
+              <input type="text" placeholder="TaxCategoryPercent" name="TaxCategoryPercent" required/>
+              <input type="text" placeholder="TaxSchemeID" name="TaxSchemeID" required/>
+            </div>
 
-          <label><b>Tax Category</b></label>
-          <input type="text" placeholder="TaxCategoryID" name="TaxCategoryID">
-          <input type="number" placeholder="Percent" name="Percent">
+            <div>
+              <br><label><b>Legal Monetary Total</b></label><br>
+              <input type="number" placeholder="LineExtensionAmount" name="LineExtensionAmount" required/>
+              <input type="number" placeholder="TaxExclusiveAmount" name="TaxExclusiveAmount" required/>
+              <input type="number" placeholder="TaxInclusiveAmount" name="TaxInclusiveAmount" required/>
+              <input type="number" placeholder="PayableRoundingAmount" name="PayableRoundingAmount" required/>
+              <input type="number" placeholder="PayableAmount" name="PayableAmount" required/>
+            </div>
 
-          <label><b>Tax Scheme</b></label>
-          <input type="text" placeholder="TaxSchemeID" name="TaxSchemeID">
+            <div>
+              <br><label><b>Invoice Line 1</b></label><br>
+              <div class="input-wrapper">
+                <div>
+                  <table>
+                    <tr>
+                      <td>
+                        <input type="text" placeholder="InvoiceLineID" name="id_field[]" value=""/>
+                        <input type="text" placeholder="InvoicedQuantity" name="quantity_field[]" value=""/>
+                        <input type="text" placeholder="LineExtensionAmount" name="amount_field[]" value=""/>
+                      </td>
+                      <td>
+                        <input type="text" placeholder="ItemName" name="item_name_field[]" value=""/>
+                        <input type="text" placeholder="PriceAmount" name="price_field[]" value=""/>
+                        <input type="text" placeholder="BaseQuantity" name="base_quantity_field[]" value=""/>
+                      </td>
+                      <td>
+                        <input type="text" placeholder="ClassifiedTaxCategoryID" name="tax_id_field[]" value=""/>
+                        <input type="text" placeholder="ClassifiedTaxCategoryPercent" name="percent_field[]" value=""/>
+                        <input type="text" placeholder="ClassifiedTaxCategoryTaxSchemeID" name="taxscheme_id_field[]" value=""/>
+                      </td>
+                      <td>
+                        <a href="javascript:void(0);" class="add-input" title="Add input">ADD</a>
+                      </td>
+                    </tr>
+                  </table>
 
-          <label><b>Legal Monetary Total</b></label>
-          <input type="number" placeholder="LineExtensionAmount" name="LineExtensionAmount">
-          <input type="number" placeholder="TaxExclusiveAmount" name="TaxExclusiveAmount">
-          <input type="number" placeholder="TaxInclusiveAmount" name="TaxInclusiveAmount">
-          <input type="number" placeholder="ChargedTotalAmount" name="ChargedTotalAmount">
-          <input type="number" placeholder="PayableAmount" name="PayableAmount">
+                  
+                </div>
+              </div>
+            </div>
 
-          
-          <label><b>Invoice Line</b></label>
-          {% for i in range(1) %}
-            <input type="text" placeholder="InvoiceLineID" name="InvoiceLineID">
-            <input type="text" placeholder="InvoicedQuantity" name="InvoicedQuantity">
-            <input type="text" placeholder="LineExtensionAmount" name="LineExtensionAmount">
-            <input type="text" placeholder="PriceAmount" name="PriceAmount">
-          {% endfor %}
+            <input type='text' value='{{ token }}' name='JWTToken' id='jwt'>
+          </div>
 
-          <input type='text' value='{{ token }}' name='JWTToken' id='jwt'>
+          <button type="submit" name="cmdsubmit">Create</button>
         </div>
 
-        <button type="submit">Create</button>
-      </div>
+      </form>
+     
+    </div>
 
-    </form>
+    <script>
+      $(document).ready(function(){
+          var max_input_fields = 10;
+          var add_input = $('.add-input');
+          var input_wrapper = $('.input-wrapper');
+          //var new_input = '<div><input type="text" name="field[]" value=""/><a href="javascript:void(0);" class="remove-input" title="Remove input">REMOVE</a></div>';
+          var new_input_id = '<div><table><tr><td><input type="text" placeholder="InvoiceLineID" name="id_field[]" value=""/>';
+          var new_input_quantity = '<input type="text" placeholder="InvoicedQuantity" name="quantity_field[]" value=""/>';
+          var new_input_amount = '<input type="text" placeholder="LineExtensionAmount" name="amount_field[]" value=""/></td>';
 
+          var new_item_name = '<td><input type="text" placeholder="ItemName" name="item_name_field[]" value=""/>'
+          var new_input_price = '<input type="text" placeholder="PriceAmount" name="price_field[]" value=""/>';
+          var new_base_quantity = '<input type="text" placeholder="BaseQuantity" name="base_quantity_field[]" value=""/></td>'
+
+          var new_tax_id = '<td><input type="text" placeholder="ClassifiedTaxCategoryID" name="tax_id_field[]" value=""/>'
+          var new_tax_percent = '<input type="text" placeholder="ClassifiedTaxCategoryPercent" name="percent_field[]" value=""/>'
+          var new_taxscheme_id = '<input type="text" placeholder="ClassifiedTaxCategoryTaxSchemeID" name="taxscheme_id_field[]" value=""/></td></tr></table></div>'
+
+          var new_invoice_line = new_input_id + new_input_quantity + new_input_amount
+          new_invoice_line += new_item_name + new_input_price + new_base_quantity
+          new_invoice_line += new_tax_id + new_tax_percent + new_taxscheme_id 
+
+          var add_input_count = 1; 
+          $(add_input).click(function(){
+              if(add_input_count < max_input_fields){
+                  add_input_count++; 
+                  $(input_wrapper).append('<br><label><b>Invoice Line ' + add_input_count + '</b></label><br>')
+                  $(input_wrapper).append(new_invoice_line); 
+              }
+          });
+          $(input_wrapper).on('click', '.remove-input', function(e){
+              e.preventDefault();
+              $(this).parent('div').remove();
+              add_input_count--;
+          });
+      });
+      </script>
   </body>
 </html>

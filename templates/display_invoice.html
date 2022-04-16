@@ -8,27 +8,36 @@
 
   <body>
     <header>
-      <h1>API Create Invoice</h1>
       <nav>
-
+        <div class="nav-wrapper">
+          <h1>API Create Invoice</h1>
+          <a href="{{ url_for('home_page') }}"><img src="" alt="Cupcake Logo"></a>
+          <a href="{{ url_for('home_page') }}">About</a>
+          <a href="{{ url_for('home_page') }}">Join</a>
+          <a href="{{ url_for('home_page') }}">Account</a>
+          <a href="{{ url_for('home_page') }}">Logout</a>
+        </div>
       </nav>
     </header>
 
-    <h2>Display Invoice</h2>
-    
-    <div class="center">
-      <embed class="invoice_pdf" src="{{ url_for('static', filename='example_invoice.pdf') }}" type="application/pdf">
+    <div class="container">
+
+      <h2>Display Invoice</h2>
+      
+      <div class="center">
+        <embed class="invoice_pdf" src="{{ url_for('static', filename='example_invoice.pdf') }}" type="application/pdf">
+      </div>
+
+      <form class="Send_invoice" action="{{ url_for('send_invoice') }}" method="post">
+
+        <label for="email"><b>Send Invoice to:</b></label>
+        <input type="text" placeholder="Enter Email" name="email" required>
+
+        <input type='text' value='{{ token }}' name='JWTToken' id='jwt'>
+
+        <button type="submit">Send</button>
+      </form>
+
     </div>
-
-    <form class="Send_invoice" action="{{ url_for('send_invoice') }}" method="post">
-
-      <label for="email"><b>Send Invoice to:</b></label>
-      <input type="text" placeholder="Enter Email" name="email" required>
-
-      <input type='text' value='{{ token }}' name='JWTToken' id='jwt'>
-
-      <button type="submit">Send</button>
-    </form>
-
   </body>
 </html>

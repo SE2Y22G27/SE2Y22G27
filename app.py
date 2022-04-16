@@ -116,6 +116,43 @@ def user_login_v1():
 @app.route("/invoice/create/v2", methods = ['POST'])
 def create_xml_route():
     token = request.form['JWTToken']
+    
+    # Create the invoice_line list of dictionaries. 
+    invoice_lines = []
+    invoice_ids = request.form.getlist('id_field[]')
+    invoice_quantity = request.form.getlist('quantity_field[]')
+    invoice_amount = request.form.getlist('amount_field[]')
+    
+    invoice_item_name = request.form.getlist('item_name_field[]')
+    invoice_tax_id = request.form.getlist('tax_id_field[]')
+    invoice_tax_percent = request.form.getlist('percent_field[]')
+    invoice_taxscheme_id = request.form.getlist('taxscheme_id_field[]')
+    
+    invoice_base_quantity = request.form.getlist('base_quantity_field[]')
+    invoice_price = request.form.getlist('price_field[]')
+    
+    for i in range(len(invoice_ids)):
+        invoice_line_dict = {
+            'ID' : invoice_ids[i],
+            'InvoicedQuantity' : invoice_quantity[i],
+            'LineExtensionAmount' : invoice_amount[i],
+            'Item' : {
+                'Name': invoice_item_name[i],
+                'ClassifiedTaxCategory': {
+                    'ID': invoice_tax_id[i],
+                    'Percent': invoice_tax_percent[i],
+                    'TaxScheme': {
+                            'ID': invoice_taxscheme_id[i],
+                        },
+                },
+            },
+            'Price' : {
+                'PriceAmount' : invoice_price[i],
+                'BaseQuantity': invoice_base_quantity[i],
+                    }
+        }
+        invoice_lines.append(invoice_line_dict)
+        
     invoice_dict = { 
         'InvoiceTypeCode' : 380,
         'InvoiceID' : request.form['InvoiceID'],
@@ -146,8 +183,8 @@ def create_xml_route():
                         'PartyName' : {'Name':  request.form['Name1']},
                         'PostalAddress' : {
                                 'StreetName' :  request.form['Street1'],
-                                'CityName':  request.form['CityName'],
-                                'PostalZone' : request.form['PostalZone'],
+                                'CityName':  request.form['City1'],
+                                'PostalZone' : request.form['PostalZone1'],
                                 'Country' : {'IdentificationCode': 'AU'}
                         },
                         'PartyLegalEntity' : {
@@ -177,48 +214,20 @@ def create_xml_route():
                              }
                                 },
                     },
-
                     },
-            
-
         'LegalMonetaryTotal' : {'LineExtensionAmount' :  request.form['LineExtensionAmount'],
                                 'TaxExclusiveAmount' : request.form['TaxExclusiveAmount'],
                                 'TaxInclusiveAmount' : request.form['TaxInclusiveAmount'],
                                 'PayableRoundingAmount' : request.form['PayableRoundingAmount'],
                                 'PayableAmount' : request.form['PayableAmount'],
                                 },
-
-        'InvoiceLine' : [],
+        'InvoiceLine' : invoice_lines,
                     }
     
     if 'AdditionalStreet' in request.form:
         invoice_dict['AccountingSupplierParty']['Party']['PostalAddress']['AdditionalStreetName'] = request.form["AdditionalStreet"]
     if 'AdditionalStreet1' in request.form:
         invoice_dict['AccountingCustomerParty']['Party']['PostalAddress']['AdditionalStreetName'] = request.form["AdditionalStreet1"]
-
-    digit = 0
-
-    while 'ID'+f"{digit}" in request.form:
-        invoice_line_dict = {
-                'ID' :  request.form['ID'+f"{digit}"],
-                'InvoiceQuantity' : request.form['InvoiceQuantity'+f"{digit}"],
-                'LineExtensionAmount' : request.form['InvoiceLineExtensionAmount'+f"{digit}"],
-                'Item' : {
-                    'Name' : request.form['ItemName'+f"{digit}"],
-                    'ClassifiedTaxCategory': {
-                        'ID':request.form['ClassifiedTaxCategoryID'+f"{digit}"],
-                        'Percent': request.form['ClassifiedTaxCategoryPercent'+f"{digit}"],
-                        'TaxScheme': {'ID' :request.form['ClassifiedTaxCategoryTaxSchemeID'+f"{digit}"]},
-                    },
-                },
-                'Price' : {
-                    'PriceAmount' : request.form['PriceAmount'+f"{digit}"],
-                    'BaseQuantity' : request.form['BaseQuantity'+f"{digit}"],
-                        },
-            }
-        invoice_dict['InvoiceLine'].append(invoice_line_dict)
-        digit = digit + 1
-   
 
     data_read_v1(token, invoice_dict)
     create_invoice_v1(token)

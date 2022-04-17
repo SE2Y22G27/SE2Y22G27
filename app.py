@@ -14,6 +14,7 @@ from source.register import register
 from source.create_xml import create_invoice_v1
 from source.helpers_auth import check_valid_token, decode_token
 from source.database import data
+from os import getcwd
 
 app = Flask(__name__)
 
@@ -28,6 +29,10 @@ def register_page():
 @app.route("/create/invoice_v2", methods=['POST'])
 def create_invoice_page():
     return render_template('invoice_creator.html', token=request.form['JWTToken'])
+
+@app.route("/invoice/create/<variable>")
+def user_invoice(variable):
+    return render_template(f'{variable}_render.html')
 
 #''' AUTH FUNCTIONS '''
 @app.route("/user/register/v2", methods=['POST'])
@@ -256,15 +261,13 @@ def create_xml_route():
             'xml' : open(f"{user_id}"+"_invoice.xml","rb")
         }
         response = requests.post(url= rendering_endpoint, params= param, files= files)
-        if response.status_code == 200:
-            mydirectory = os.path.dirname(__file__)
-            completename = os.path.join(mydirectory + "/" + "templates", f"{user_id}"+"render.html")
-            f = open(completename, "w")
-            f.write(response.text)
-        else:
-            print("Something is wrong")
+    
+    mydirectory = getcwd()
+    completename = os.path.join(mydirectory + "/templates", f"{user_id}"+"_render.html")
+    f = open(completename, "w")
+    f.write(response.text)
 
-    return render_template('display_invoice.html', token=token, text=response.text)
+    return render_template('display_invoice.html', token=token, user_id=user_id)
     
 
 @app.route("/invoice/send/v1", methods = ['POST'])

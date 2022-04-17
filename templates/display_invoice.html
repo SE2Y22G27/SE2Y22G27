@@ -28,6 +28,11 @@
         <embed class="invoice_pdf" src="{{ url_for('static', filename='example_invoice.pdf') }}" type="application/pdf">
       </div>
 
+      <div class="center">
+        {{ text }}
+      </div>
+
+
       <form class="Send_invoice" action="{{ url_for('send_invoice') }}" method="post">
 
         <label for="email"><b>Send Invoice to:</b></label>

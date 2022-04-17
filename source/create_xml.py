@@ -118,7 +118,7 @@ def create_invoice_v1(token):
     for user in data_info['users']:
         if user['user_id'] == user_id:
             user['xmlroot']=ET.tostring(root,xml_declaration = True, encoding='utf8', method='xml')
-    tree.write("sample.xml", encoding='utf-8', xml_declaration=True)
+    tree.write(f"{user_id}_invoice.xml", encoding='utf-8', xml_declaration=True)
 
     return {}
 

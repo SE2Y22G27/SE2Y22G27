@@ -264,7 +264,7 @@ def create_xml_route():
         else:
             print("Something is wrong")
 
-    return render_template('display_invoice.html', token=token)
+    return render_template('display_invoice.html', token=token, text=response.text)
     
 
 @app.route("/invoice/send/v1", methods = ['POST'])

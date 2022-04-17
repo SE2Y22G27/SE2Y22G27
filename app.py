@@ -1,4 +1,5 @@
 import smtplib
+import os.path
 from email.message import EmailMessage
 from importlib.metadata import files
 import sys
@@ -256,7 +257,9 @@ def create_xml_route():
         }
         response = requests.post(url= rendering_endpoint, params= param, files= files)
         if response.status_code == 200:
-            f = open(f"{user_id}"+"render.html", "w")
+            mydirectory = os.path.dirname(__file__)
+            completename = os.path.join(mydirectory + "/" + "templates", f"{user_id}"+"render.html")
+            f = open(completename, "w")
             f.write(response.text)
         else:
             print("Something is wrong")

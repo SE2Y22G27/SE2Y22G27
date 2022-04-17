@@ -23,13 +23,9 @@
     <div class="container">
 
       <h2>Display Invoice</h2>
-      
-      <div class="center">
-        <embed class="invoice_pdf" src="{{ url_for('static', filename='example_invoice.pdf') }}" type="application/pdf">
-      </div>
 
       <div class="center">
-        {{ text }}
+        <iframe class="invoice_pdf" src="{{ url_for('user_invoice', variable=user_id) }}" title="Invoice Pdf"></iframe>
       </div>
 
 

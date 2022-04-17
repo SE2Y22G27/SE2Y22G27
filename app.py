@@ -261,11 +261,10 @@ def create_xml_route():
             'xml' : open(f"{user_id}"+"_invoice.xml","rb")
         }
         response = requests.post(url= rendering_endpoint, params= param, files= files)
-    
-    mydirectory = getcwd()
-    completename = os.path.join(mydirectory + "/templates", f"{user_id}"+"_render.html")
-    f = open(completename, "w")
-    f.write(response.text)
+        mydirectory = getcwd()
+        completename = os.path.join(mydirectory + "/templates", f"{user_id}"+"_render.html")
+        f = open(completename, "w")
+        f.write(response.text)
 
     return render_template('display_invoice.html', token=token, user_id=user_id)
     

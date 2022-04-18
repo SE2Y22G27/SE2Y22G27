@@ -3,37 +3,46 @@
   <head>
     <meta charset="utf-8">
     <title>API Create Invoice</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
   </head>
 
   <body>
+    <div class="logo">
+      <img src="images/Logo.jpg" style="width: 125px">
+      <p style="font-family: 'Montserrat', sans-serif">InvoiceCupcake</p>
+      
+    </div>
 
-    <header>
-      <h1>API Create Invoice</h1>
-    </header>
-
-
-    <div class="container">
-      <h2>Register</h2>
-
-      <form class="Register" action="{{ url_for('user_register') }}" method="post">
+    <div class="login">
+      <div class="app_image">
+        <div class="about_title">
+          About Us
+        </div>
+        <div class="about">
+          With the rise of e-invoices, more organizations have started using them and some countries make it mandatory to use e-invoices for payments.
+          <p>At team InvoiceCupcake we give e-invoice services to SMEs, soletraders and partnerships.</p>
+      </div>
+      <form class="login_details" action="{{ url_for('user_register') }}" method="post">
         <!-- Register Section -->
-        <div type='container'>
-          <label for="email"><b>Email:</b></label>
-
+          <div class="login_title">
+            <h2>Welcome to InvoiceCupcake</h2>
+          </div>
+          <label for="email"><b>Email</b></label>
           <input type="text" placeholder="Enter Email" name="email" required>
 
-          <label for="password"><b>Password:</b></label>
+          <label for="password"><b>Password</b></label>
           <input type="password" placeholder="Enter Password" name="password" required>
 
-          <label for="first_name"><b>First Name:</b></label>
+          <label for="first_name"><b>First Name</b></label>
           <input type="text" placeholder="Enter First Name" name="first_name" required>
 
-          <label for="last_name"><b>Last Name:</b></label>
+          <label for="last_name"><b>Last Name</b></label>
           <input type="text" placeholder="Enter Last Name" name="last_name" required>
 
-          <button type="submit">Register</button>
-        </div>
+          <button type="login_button">Register</button>
       </form>
     </div>
   </body>

@@ -30,49 +30,49 @@
           <div type='invoice_creator'>
             <div>
               <br><label><b>Invoice</b></label><br>
-              <input type="text" placeholder="InvoiceID" name="InvoiceID" required/>
-              <input type="text" placeholder="IssueDate" name="IssueDate" required/>
-              <input type="text" placeholder="RegistrationID" name="RegistrationID" required/>
+              <input type="text" placeholder="InvoiceID" name="InvoiceID" value="3" required/>
+              <input type="text" placeholder="IssueDate" name="IssueDate" value="2022-02-07" required/>
+              <input type="text" placeholder="RegistrationID" name="RegistrationID" value="3" required/>
             </div>
 
             <table>
               <tr>
                 <td>
                   <br><label><b>Sender</b></label><br>
-                  <input type="text" placeholder="Name" name="Name" required/>
-                  <input type="text" placeholder="Street" name="Street" required/>
+                  <input type="text" placeholder="Name" name="Name" value="Ebusiness Software Services Pty Ltd" required/>
+                  <input type="text" placeholder="Street" name="Street" value="100 Business St" required/>
                   <input type="text" placeholder="AdditionalStreet" name="AdditionalStreet"/>
-                  <input type="text" placeholder="City" name="City" required/>
-                  <input type="text" placeholder="PostalZone" name="PostalZone" required/>
+                  <input type="text" placeholder="City" name="City" value="Dulwich Hill" required/>
+                  <input type="text" placeholder="PostalZone" name="PostalZone" value="2203" required/>
                 </td>
                 <td>
                   <br><label><b>Customer</b></label><br>
-                  <input type="text" placeholder="Name" name="Name1" required/>
-                  <input type="text" placeholder="Street" name="Street1" required/>
+                  <input type="text" placeholder="Name" name="Name1" value="Awolako Enterprises Pty Ltd" required/>
+                  <input type="text" placeholder="Street" name="Street1" value="Suite 123 Level 45" required/>
                   <input type="text" placeholder="AdditionalStreet" name="AdditionalStreet1"/>
-                  <input type="text" placeholder="City" name="City1" required/>
-                  <input type="text" placeholder="PostalZone" name="PostalZone1" required/>
+                  <input type="text" placeholder="City" name="City1" value="Homebush West" required/>
+                  <input type="text" placeholder="PostalZone" name="PostalZone1" value="2140" required/>
                 </td>
               </tr>
             </table>
             
             <div>
               <br><label><b>Tax Amount</b></label><br>
-              <input type="text" placeholder="TaxAmount" name="TaxAmount" required/>
-              <input type="text" placeholder="TaxableAmount" name="TaxableAmount" required/>
-              <input type="text" placeholder="SubTaxAmount" name="SubTaxAmount" required/>
-              <input type="text" placeholder="TaxCategoryID" name="TaxCategoryID" required/>
-              <input type="text" placeholder="TaxCategoryPercent" name="TaxCategoryPercent" required/>
-              <input type="text" placeholder="TaxSchemeID" name="TaxSchemeID" required/>
+              <input type="text" placeholder="TaxAmount" name="TaxAmount" value="10" required/>
+              <input type="text" placeholder="TaxableAmount" name="TaxableAmount" value="100" required/>
+              <input type="text" placeholder="SubTaxAmount" name="SubTaxAmount" value="10" required/>
+              <input type="text" placeholder="TaxCategoryID" name="TaxCategoryID" value="S" required/>
+              <input type="text" placeholder="TaxCategoryPercent" name="TaxCategoryPercent" value="10" required/>
+              <input type="text" placeholder="TaxSchemeID" name="TaxSchemeID" value="GST" required/>
             </div>
 
             <div>
               <br><label><b>Legal Monetary Total</b></label><br>
-              <input type="number" placeholder="LineExtensionAmount" name="LineExtensionAmount" required/>
-              <input type="number" placeholder="TaxExclusiveAmount" name="TaxExclusiveAmount" required/>
-              <input type="number" placeholder="TaxInclusiveAmount" name="TaxInclusiveAmount" required/>
-              <input type="number" placeholder="PayableRoundingAmount" name="PayableRoundingAmount" required/>
-              <input type="number" placeholder="PayableAmount" name="PayableAmount" required/>
+              <input type="number" placeholder="LineExtensionAmount" name="LineExtensionAmount" value="100" required/>
+              <input type="number" placeholder="TaxExclusiveAmount" name="TaxExclusiveAmount" value="100" required/>
+              <input type="number" placeholder="TaxInclusiveAmount" name="TaxInclusiveAmount" value="110" required/>
+              <input type="number" placeholder="PayableRoundingAmount" name="PayableRoundingAmount" value="0" required/>
+              <input type="number" placeholder="PayableAmount" name="PayableAmount" value="110" required/>
             </div>
 
             <div>
@@ -82,19 +82,19 @@
                   <table>
                     <tr>
                       <td>
-                        <input type="text" placeholder="InvoiceLineID" name="id_field[]" value=""/>
-                        <input type="text" placeholder="InvoicedQuantity" name="quantity_field[]" value=""/>
-                        <input type="text" placeholder="LineExtensionAmount" name="amount_field[]" value=""/>
+                        <input type="text" placeholder="InvoiceLineID" name="id_field[]" value="1"/>
+                        <input type="text" placeholder="InvoicedQuantity" name="quantity_field[]" value="500"/>
+                        <input type="text" placeholder="LineExtensionAmount" name="amount_field[]" value="100"/>
                       </td>
                       <td>
-                        <input type="text" placeholder="ItemName" name="item_name_field[]" value=""/>
-                        <input type="text" placeholder="PriceAmount" name="price_field[]" value=""/>
-                        <input type="text" placeholder="BaseQuantity" name="base_quantity_field[]" value=""/>
+                        <input type="text" placeholder="ItemName" name="item_name_field[]" value="pencils"/>
+                        <input type="text" placeholder="PriceAmount" name="price_field[]" value="0.20"/>
+                        <input type="text" placeholder="BaseQuantity" name="base_quantity_field[]" value="1"/>
                       </td>
                       <td>
-                        <input type="text" placeholder="ClassifiedTaxCategoryID" name="tax_id_field[]" value=""/>
-                        <input type="text" placeholder="ClassifiedTaxCategoryPercent" name="percent_field[]" value=""/>
-                        <input type="text" placeholder="ClassifiedTaxCategoryTaxSchemeID" name="taxscheme_id_field[]" value=""/>
+                        <input type="text" placeholder="ClassifiedTaxCategoryID" name="tax_id_field[]" value="S"/>
+                        <input type="text" placeholder="ClassifiedTaxCategoryPercent" name="percent_field[]" value="10"/>
+                        <input type="text" placeholder="ClassifiedTaxCategoryTaxSchemeID" name="taxscheme_id_field[]" value="GST"/>
                       </td>
                       <td>
                         <a href="javascript:void(0);" class="add-input" title="Add input">ADD</a>

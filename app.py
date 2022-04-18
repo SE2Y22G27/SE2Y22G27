@@ -282,6 +282,12 @@ def send_invoice():
         data=myinvoice.read()
         msg.add_attachment(data, maintype="application",subtype="xml",filename=myinvoice.name)
 
+    mydirectory = getcwd()
+    completename = os.path.join(mydirectory + "/templates", f"{user_id}"+"_render.html")
+    with open(completename, "rb") as myinvoice:
+        data=myinvoice.read()
+        msg.add_attachment(data, maintype="application",subtype="html",filename=f"{user_id}"+"_render.html")
+
     server = smtplib.SMTP_SSL('smtp.gmail.com',465)
     server.login("teamcupcake2022@gmail.com","cake731816289")
     server.send_message(msg)

@@ -4,28 +4,47 @@
     <meta charset="utf-8">
     <title>API Create Invoice</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
   </head>
 
   <body>
-    <header>
-      <h1>API Create Invoice</h1>
-    </header>
+    <div class="logo">
+      <img src="images/Logo.jpg" style="width: 125px">
+      <p style="font-family: 'Montserrat', sans-serif">InvoiceCupcake</p>
+    </div>
 
-    <div class="container">
-      <h2>Login</h2>
+    <div class="login">
+      <div class="app_image">
+        <div class="about_title">
+          About Us
+        </div>
+        <div class="about">
+          With the rise of e-invoices, more organizations have started using them and some countries make it mandatory to use e-invoices for payments.
+          <p>At team InvoiceCupcake our goal is to provide e-invoice servies to individuals and small businesses such as soletraders, partnerships and SMEs.</p>
+        </div>
+      </div>
+      <form class="login_details" action="{{ url_for('user_login') }}" method="post">
+        <!-- Login Section --> 
+        <h2 class="login_title">
+          LOGIN
+        </h2>
 
-      <form class="Login" action="{{ url_for('user_login') }}" method="post">
-        <!-- Login Section -->
-        <label for="email"><b>Email:</b></label>
+        <label for="email"><b>Email</b></label>
         <input type="text" placeholder="Enter Email Address" name="email" required>
 
-        <label for="password"><b>Password:</b></label>
+        <label for="password"><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="password" required>
 
-        <button type="submit">Login</button>
-      </form>
+        <button type="login_button">Login</button>
 
-      <p>Need an account? <a href="{{ url_for('register_page') }}">Sign up</a></p>
+        <label>Dont have an Account?</label>
+        <button type="register_button"><a href="{{ url_for('register_page') }}">Register</a></button>
+      </form>
     </div>
   </body>
 </html>

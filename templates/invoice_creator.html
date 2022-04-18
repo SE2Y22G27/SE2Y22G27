@@ -122,17 +122,17 @@
           var add_input = $('.add-input');
           var input_wrapper = $('.input-wrapper');
           //var new_input = '<div><input type="text" name="field[]" value=""/><a href="javascript:void(0);" class="remove-input" title="Remove input">REMOVE</a></div>';
-          var new_input_id = '<div><table><tr><td><input type="text" placeholder="InvoiceLineID" name="id_field[]" value=""/>';
-          var new_input_quantity = '<input type="text" placeholder="InvoicedQuantity" name="quantity_field[]" value=""/>';
-          var new_input_amount = '<input type="text" placeholder="LineExtensionAmount" name="amount_field[]" value=""/></td>';
+          var new_input_id = '<div><table><tr><td><input type="invoice" placeholder="InvoiceLineID" name="id_field[]" value=""/>';
+          var new_input_quantity = '<input type="invoice" placeholder="InvoicedQuantity" name="quantity_field[]" value=""/>';
+          var new_input_amount = '<input type="invoice" placeholder="LineExtensionAmount" name="amount_field[]" value=""/></td>';
 
-          var new_item_name = '<td><input type="text" placeholder="ItemName" name="item_name_field[]" value=""/>'
-          var new_input_price = '<input type="text" placeholder="PriceAmount" name="price_field[]" value=""/>';
-          var new_base_quantity = '<input type="text" placeholder="BaseQuantity" name="base_quantity_field[]" value=""/></td>'
+          var new_item_name = '<td><input type="invoice" placeholder="ItemName" name="item_name_field[]" value=""/>'
+          var new_input_price = '<input type="invoice" placeholder="PriceAmount" name="price_field[]" value=""/>';
+          var new_base_quantity = '<input type="invoice" placeholder="BaseQuantity" name="base_quantity_field[]" value=""/></td>'
 
-          var new_tax_id = '<td><input type="text" placeholder="ClassifiedTaxCategoryID" name="tax_id_field[]" value=""/>'
-          var new_tax_percent = '<input type="text" placeholder="ClassifiedTaxCategoryPercent" name="percent_field[]" value=""/>'
-          var new_taxscheme_id = '<input type="text" placeholder="ClassifiedTaxCategoryTaxSchemeID" name="taxscheme_id_field[]" value=""/></td></tr></table></div>'
+          var new_tax_id = '<td><input type="invoice" placeholder="ClassifiedTaxCategoryID" name="tax_id_field[]" value=""/>'
+          var new_tax_percent = '<input type="invoice" placeholder="ClassifiedTaxCategoryPercent" name="percent_field[]" value=""/>'
+          var new_taxscheme_id = '<input type="invoice" placeholder="ClassifiedTaxCategoryTaxSchemeID" name="taxscheme_id_field[]" value=""/></td></tr></table></div>'
 
           var new_invoice_line = new_input_id + new_input_quantity + new_input_amount
           new_invoice_line += new_item_name + new_input_price + new_base_quantity

@@ -51,6 +51,14 @@ body {
     float: left;
 }
 
+
+
+.login_wrap {
+    margin: 50px 20px 40px 20px;
+    flex: 2;
+    float: left;
+}
+
 .about {
     position: relative;
     font-family: 'Montserrat', sans-serif;

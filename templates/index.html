@@ -28,22 +28,26 @@
           <p>At team InvoiceCupcake our goal is to provide e-invoice servies to individuals and small businesses such as soletraders, partnerships and SMEs.</p>
         </div>
       </div>
-      <form class="login_details" action="{{ url_for('user_login') }}" method="post">
-        <!-- Login Section --> 
-        <h2 class="login_title">
-          LOGIN
-        </h2>
+      <div class="login_wrap">
+        <form class="login_details" action="{{ url_for('user_login') }}" method="post">
+          <!-- Login Section --> 
+          <h2 class="login_title">
+            LOGIN
+          </h2>
+  
+          <label for="email"><b>Email</b></label>
+          <input type="text" placeholder="Enter Email Address" name="email" required>
+  
+          <label for="password"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="password" required>
+  
+          <button type="login_button">Login</button>
+        </form>
+        
+        <label>Dont have an Account?</label>
+        <button type="register_button"><a href="{{ url_for('register_page') }}">Register</a></button>
+      </div>
 
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email Address" name="email" required>
-
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
-
-        <button type="login_button">Login</button>
-      </form>
-      <label>Dont have an Account?</label>
-      <button type="register_button"><a href="{{ url_for('register_page') }}">Register</a></button>
     </div>
   </body>
 </html>

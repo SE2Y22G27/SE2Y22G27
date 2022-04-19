@@ -31,9 +31,9 @@
       <form class="Send_invoice" action="{{ url_for('send_invoice') }}" method="post">
 
         <label for="email"><b>Send Invoice to:</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
+        <input type="send" placeholder="Enter Email" name="email" required>
 
-        <input type='text' value='{{ token }}' name='JWTToken' id='jwt'>
+        <input type='send' value='{{ token }}' name='JWTToken' id='jwt'>
 
         <button type="submit">Send</button>
       </form>

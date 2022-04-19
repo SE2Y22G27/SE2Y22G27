@@ -281,6 +281,11 @@ def send_invoice():
     with open(filename, "rb") as myinvoice:
         data=myinvoice.read()
         msg.add_attachment(data, maintype="application",subtype="xml",filename=myinvoice.name)
+    mydirectory = getcwd()
+    completename = os.path.join(mydirectory + "/templates", f"{user_id}"+"_render.html")
+    with open(completename, "rb") as myinvoice:
+        data=myinvoice.read()
+        msg.add_attachment(data, maintype="application",subtype="html",filename=f"{user_id}"+"_render.html")
 
     mydirectory = getcwd()
     completename = os.path.join(mydirectory + "/templates", f"{user_id}"+"_render.html")

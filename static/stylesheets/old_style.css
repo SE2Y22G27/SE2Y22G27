@@ -115,6 +115,15 @@ input[type=text], input[type=password], input[type=number] {
   border-bottom: 1px solid #dbdbdb;
 }
 
+input[type=send] {
+  width: 95%;
+  padding: 15px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: none; 
+  border-bottom: 1px solid #dbdbdb;
+}
+
 input[type=text] {
   width: 42%;
   padding: 15px 20px;

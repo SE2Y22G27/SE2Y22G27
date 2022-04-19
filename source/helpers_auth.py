@@ -36,7 +36,7 @@ def generate_token(session_id, user_id):
     info = {
 		'session_id': str(session_id),
 		'user_id': user_id,
-		'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=1800)
+		'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=86400)
 	}
 
     token = jwt.encode(info, secret, algorithm='HS256')
